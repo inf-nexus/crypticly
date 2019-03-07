@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import styles from './Counter.css';
 import routes from '../constants/routes';
 
+import electron from 'electron';
+
 type Props = {
   increment: () => void,
   incrementIfOdd: () => void,
@@ -14,6 +16,8 @@ type Props = {
 
 export default class Counter extends Component<Props> {
   props: Props;
+
+  resizeWindow() {}
 
   render() {
     const {
@@ -65,6 +69,14 @@ export default class Counter extends Component<Props> {
             type="button"
           >
             async
+          </button>
+          <button
+            className={styles.btn}
+            onClick={this.resizeWindow}
+            data-tclass="btn"
+            type="button"
+          >
+            resize window
           </button>
         </div>
       </div>

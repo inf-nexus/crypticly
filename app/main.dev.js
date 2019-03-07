@@ -14,6 +14,7 @@ import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
+import { hidden } from 'ansi-colors';
 
 export default class AppUpdater {
   constructor() {
@@ -70,7 +71,9 @@ app.on('ready', async () => {
   mainWindow = new BrowserWindow({
     show: false,
     width: 1024,
-    height: 728
+    height: 728,
+    titleBarStyle: 'hidden'
+    // frame: false
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
