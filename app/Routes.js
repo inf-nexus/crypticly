@@ -22,6 +22,6 @@ export default () => (
       <Route path={routes.COUNTER} component={CounterPage} />
       <Route path={routes.HOME} component={HomePage} />
     </Switch>
-    {/* <Redirect to={routes.LOGIN} /> */}
+    <Redirect to={routes.LOGIN} />
   </App>
 );
