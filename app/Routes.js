@@ -1,12 +1,22 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router';
-import routes from 'constants/Routes';
+import styled from 'styled-components';
+
+import Routes from 'constants/Routes';
 import App from 'containers/App';
 import LoginPage from 'containers/LoginPage';
 import HomePage from 'containers/HomePage';
 import CounterPage from 'containers/CounterPage';
 
-import styled from 'styled-components';
+const StyledContainer = styled.div`
+  background-color: #232c39;
+  background-image: linear-gradient(
+    45deg,
+    rgba(0, 216, 255, 0.5) 10%,
+    rgba(0, 1, 127, 0.7)
+  );
+  height: 100vh;
+`;
 
 const DraggableRegion = styled.div`
   height: 50px;
@@ -16,12 +26,14 @@ const DraggableRegion = styled.div`
 
 export default () => (
   <App>
-    <DraggableRegion />
-    <Switch>
-      <Route path={routes.LOGIN} component={LoginPage} />
-      <Route path={routes.COUNTER} component={CounterPage} />
-      <Route path={routes.HOME} component={HomePage} />
-    </Switch>
-    <Redirect to={routes.LOGIN} />
+    <StyledContainer>
+      <DraggableRegion />
+      <Switch>
+        <Route path={Routes.LOGIN} component={LoginPage} />
+        <Route path={Routes.COUNTER} component={CounterPage} />
+        <Route path={Routes.HOME} component={HomePage} />
+      </Switch>
+      <Redirect to={Routes.LOGIN} />
+    </StyledContainer>
   </App>
 );

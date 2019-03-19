@@ -7,7 +7,8 @@ import { partial } from 'lodash';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-import FormInput from 'ui-components/FormInput';
+import UIFormInput from 'ui-components/UIFormInput';
+import UIButton from 'ui-components/UIButton';
 
 const TITLE = 'Crypticly';
 const USERNAME = 'username';
@@ -21,7 +22,7 @@ const UILoginPageContainer = styled.div`
 const LoginContainer = styled(Paper)`
   margin: auto;
   width: 500px;
-  height: 600px;
+  height: 300px;
   padding: 30px;
   display: flex;
   flex-direction: column;
@@ -30,6 +31,7 @@ const LoginContainer = styled(Paper)`
 const LoginFormContainer = styled.form`
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   flex: 3;
 `;
 
@@ -38,7 +40,7 @@ const Header = styled(Typography)`
 `;
 
 type Props = {
-  onLoginClicked: (username: string, password: string) => void
+  onLoginClicked?: (username: string, password: string) => void
 };
 
 type State = {
@@ -63,6 +65,7 @@ class LoginForm extends PureComponent<Props, State> {
   }
 
   render() {
+    const { username, password } = this.state;
     return (
       <UILoginPageContainer>
         <LoginContainer>
@@ -70,17 +73,22 @@ class LoginForm extends PureComponent<Props, State> {
             {TITLE}
           </Header>
           <LoginFormContainer>
-            <FormInput
+            <UIFormInput
               label={USERNAME}
-              value={this.state.username}
+              value={username}
               onChange={partial(this.handleInputUpdate, 'username')}
             />
-
-            <FormInput
+            <UIFormInput
               label={PASSWORD}
-              value={this.state.password}
+              value={password}
               onChange={partial(this.handleInputUpdate, 'password')}
               type="password"
+            />
+            <UIButton
+              title="Submit"
+              onClick={() => {
+                console.log('button clicked');
+              }}
             />
           </LoginFormContainer>
         </LoginContainer>

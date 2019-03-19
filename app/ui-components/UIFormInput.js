@@ -2,9 +2,9 @@
 
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { partial } from 'lodash';
+// import { partial } from 'lodash';
 
-import Paper from '@material-ui/core/Paper';
+// import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 
@@ -33,7 +33,7 @@ type Props = {
   onChange: () => void
 };
 
-class FormInput extends PureComponent<Props> {
+class UIFormInput extends PureComponent<Props> {
   render() {
     const { label, placeholder, value, onChange, type } = this.props;
 
@@ -45,8 +45,8 @@ class FormInput extends PureComponent<Props> {
           value={value}
           onChange={onChange}
           autoComplete="false"
-          disableUnderline={true}
-          required={true}
+          disableUnderline
+          required
           type={type}
         />
       </InputContainer>
@@ -54,4 +54,4 @@ class FormInput extends PureComponent<Props> {
   }
 }
 
-export default FormInput;
+export default UIFormInput;

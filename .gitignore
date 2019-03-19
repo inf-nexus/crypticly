@@ -58,3 +58,5 @@ npm-debug.log.*
 #local files
 .github
 .vscode
+
+package-lock.json
