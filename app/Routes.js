@@ -33,7 +33,7 @@ export default () => (
         <Route path={Routes.COUNTER} component={CounterPage} />
         <Route path={Routes.HOME} component={HomePage} />
       </Switch>
-      <Redirect to={Routes.LOGIN} />
+      <Redirect to={Routes.HOME} />
     </StyledContainer>
   </App>
 );
