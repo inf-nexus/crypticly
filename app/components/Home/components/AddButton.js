@@ -9,7 +9,7 @@ type Props = {
   onClick: () => void
 };
 
-class UIAddButton extends PureComponent<Props> {
+class AddButton extends PureComponent<Props> {
   render() {
     const { onClick } = this.props;
     return (
@@ -20,4 +20,4 @@ class UIAddButton extends PureComponent<Props> {
   }
 }
 
-export default UIAddButton;
+export default AddButton;
