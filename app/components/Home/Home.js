@@ -5,6 +5,7 @@ import routes from 'constants/routes';
 import styled from 'styled-components';
 
 import AddButton from './components/AddButton';
+import PasswordGroups from './components/passwordGroups/PasswordGroups';
 import PasswordConfigPanel from './components/passwordConfigPanel/PasswordConfigPanel';
 
 const HomeContainer = styled.div`
@@ -14,6 +15,8 @@ const HomeContainer = styled.div`
 
 const PasswordsContainer = styled.div`
   flex: 5;
+  display: flex;
+  justify-content: center;
 `;
 const AddButtonContainer = styled.div`
   flex: 1;
@@ -58,7 +61,9 @@ export default class Home extends PureComponent<Props, State> {
 
     return (
       <HomeContainer>
-        <PasswordsContainer />
+        <PasswordsContainer>
+          <PasswordGroups />
+        </PasswordsContainer>
         <AddButtonContainer>
           <AddButtonStyleWrapper>
             <AddButton onClick={this.handleAddButtonClicked} />

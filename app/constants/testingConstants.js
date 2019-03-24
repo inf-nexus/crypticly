@@ -7,28 +7,27 @@ const password1 = {
 };
 
 const password2 = {
-    username: 'foo',
-    password: 'bar',
-    name: 'Singularity',
-    url: 'https://google.com',
-    group: 'Social'
-  };
-
-const password3 = {
-    username: 'foo',
-    password: 'bar',
-    name: 'Best Bank',
-    url: 'https://google.com',
-    group: 'Banking'
+  username: 'foo',
+  password: 'bar',
+  name: 'Singularity',
+  url: 'https://google.com',
+  group: 'Social'
 };
 
-export const passwords = {
-    Social: [password1, password2]
-    Banking: [password3],
-}
+const password3 = {
+  username: 'foo',
+  password: 'bar',
+  name: 'Best Bank',
+  url: 'https://google.com',
+  group: 'Banking'
+};
+
+export const passwordGroups = {
+  Social: [password1, password2],
+  Banking: [password3]
+};
 
 export const credentials = {
-    username: 'foo',
-    password: 'bar'
-}
-
+  username: 'foo',
+  password: 'bar'
+};
