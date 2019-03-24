@@ -1,7 +1,7 @@
 const password1 = {
   username: 'foo',
   password: 'bar',
-  name: 'Hello World',
+  title: 'Hello World',
   url: 'https://google.com',
   group: 'Social'
 };
@@ -9,7 +9,7 @@ const password1 = {
 const password2 = {
   username: 'foo',
   password: 'bar',
-  name: 'Singularity',
+  title: 'Singularity',
   url: 'https://google.com',
   group: 'Social'
 };
@@ -17,15 +17,15 @@ const password2 = {
 const password3 = {
   username: 'foo',
   password: 'bar',
-  name: 'Best Bank',
+  title: 'Best Bank',
   url: 'https://google.com',
   group: 'Banking'
 };
 
-export const passwordGroups = {
-  Social: [password1, password2],
-  Banking: [password3]
-};
+export const passwordGroups = [
+  { group: 'Social', passwords: [password1, password2] },
+  { group: 'Banking', passwords: [password3] }
+];
 
 export const credentials = {
   username: 'foo',

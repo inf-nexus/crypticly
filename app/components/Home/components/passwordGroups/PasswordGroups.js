@@ -9,12 +9,13 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import MUIExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MUITypography from '@material-ui/core/Typography';
 
+import PasswordGroup from './components/PasswordGroup';
+
 import { passwordGroups } from 'constants/testingConstants';
 
 const ExpansionPanel = styled(MUIExpansionPanel)`
   background: none;
   box-shadow: none;
-  width: 90%;
   margin-bottom: 100px;
 
   :before {
@@ -40,15 +41,10 @@ const ExpandMoreIcon = styled(MUIExpandMoreIcon)`
 const PasswordExpansionPanel = ({ passwordGroup }) => (
   <ExpansionPanel>
     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-      <Typography component="h2" color="white">
-        {passwordGroup}
-      </Typography>
+      <Typography component="h2">{passwordGroup.group}</Typography>
     </ExpansionPanelSummary>
     <ExpansionPanelDetails>
-      <Typography>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-        malesuada lacus ex, sit amet blandit leo lobortis eget.
-      </Typography>
+      <PasswordGroup passwords={passwordGroup.passwords} />
     </ExpansionPanelDetails>
   </ExpansionPanel>
 );
@@ -59,7 +55,7 @@ class PasswordGroups extends PureComponent<Props> {
   render() {
     return (
       <div>
-        {Object.keys(passwordGroups).map(passwordGroup => (
+        {passwordGroups.map(passwordGroup => (
           <PasswordExpansionPanel passwordGroup={passwordGroup} />
         ))}
       </div>
