@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import UILoginPage from 'components/Login/UILoginPage';
 
 // TODO: remove import after testing
-import { encrypt, decrypt } from 'utils/aesCipher';
+import { encrypt, decrypt } from 'utils/cipher';
 
 const fs = window.require('fs');
 
