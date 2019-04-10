@@ -17,6 +17,7 @@ const PasswordsContainer = styled.div`
   flex: 5;
   display: flex;
   justify-content: center;
+  padding-bottom: 100px;
 `;
 const AddButtonContainer = styled.div`
   flex: 1;
@@ -26,7 +27,7 @@ const AddButtonContainer = styled.div`
 
 const AddButtonStyleWrapper = styled.div`
   margin-top: 80vh;
-  position: absolute;
+  position: fixed;
   padding-right: 30px;
 `;
 

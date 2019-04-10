@@ -8,14 +8,16 @@ import LoginPage from 'containers/LoginPage';
 import HomePage from 'containers/HomePage';
 import CounterPage from 'containers/CounterPage';
 
-const StyledContainer = styled.div`
+import Paper from '@material-ui/core/Paper';
+
+const StyledContainer = styled(Paper)`
   background-color: #232c39;
   background-image: linear-gradient(
     45deg,
     rgba(0, 216, 255, 0.5) 10%,
     rgba(0, 1, 127, 0.7)
   );
-  height: 100vh;
+  min-height: 100vh;
 `;
 
 const DraggableRegion = styled.div`
@@ -33,7 +35,7 @@ export default () => (
         <Route path={Routes.COUNTER} component={CounterPage} />
         <Route path={Routes.HOME} component={HomePage} />
       </Switch>
-      <Redirect to={Routes.HOME} />
+      <Redirect to={Routes.LOGIN} />
     </StyledContainer>
   </App>
 );

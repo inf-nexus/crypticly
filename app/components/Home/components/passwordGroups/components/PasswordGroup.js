@@ -23,7 +23,7 @@ class PasswordGroup extends PureComponent<Props> {
           <ListSubheader component="div">December</ListSubheader>
         </GridListTile> */}
         {passwords.map(password => (
-          <PasswordTile password={password} />
+          <PasswordTile password={password} key={password.title} />
         ))}
       </GridList>
     );

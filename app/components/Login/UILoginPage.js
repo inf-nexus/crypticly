@@ -44,13 +44,13 @@ const Header = styled(Typography)`
 `;
 
 type Props = {
-  onLoginClicked?: (username: string, password: string) => void
+  onLoginClicked: (username: string, password: string) => void,
+  authenticated: boolean
 };
 
 type State = {
   username: string,
-  password: string,
-  authenticated: boolean
+  password: string
 };
 
 class LoginForm extends PureComponent<Props, State> {
@@ -59,25 +59,19 @@ class LoginForm extends PureComponent<Props, State> {
 
     this.state = {
       username: '',
-      password: '',
-      authenticated: false
+      password: ''
     };
 
     this.handleInputUpdate = this.handleInputUpdate.bind(this);
-    this.handleUserAuthentication = this.handleUserAuthentication.bind(this);
   }
 
   handleInputUpdate(field, event) {
     this.setState({ [field]: event.target.value });
   }
 
-  handleUserAuthentication() {
-    // TODO: password checking here
-    this.setState({ authenticated: true });
-  }
-
   render() {
-    const { username, password, authenticated } = this.state;
+    const { username, password } = this.state;
+    const { onLoginClicked, authenticated } = this.props;
 
     let content;
 
@@ -104,7 +98,7 @@ class LoginForm extends PureComponent<Props, State> {
               />
               <UIButton
                 title="Submit"
-                onClick={this.handleUserAuthentication}
+                onClick={partial(onLoginClicked, username, password)}
               />
             </LoginFormContainer>
           </LoginContainer>

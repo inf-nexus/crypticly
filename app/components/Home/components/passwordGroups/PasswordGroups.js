@@ -56,7 +56,10 @@ class PasswordGroups extends PureComponent<Props> {
     return (
       <div>
         {passwordGroups.map(passwordGroup => (
-          <PasswordExpansionPanel passwordGroup={passwordGroup} />
+          <PasswordExpansionPanel
+            passwordGroup={passwordGroup}
+            key={passwordGroup.group}
+          />
         ))}
       </div>
     );

@@ -6,11 +6,11 @@ class Credentials extends Record(
   { username: null, password: null },
   'Credentials'
 ) {
-  getUsername() {
+  getUsername(): string {
     return this[username];
   }
 
-  getPassword() {
+  getPassword(): string {
     return this[password];
   }
 }
