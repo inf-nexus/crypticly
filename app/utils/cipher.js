@@ -5,7 +5,7 @@ import crypto from 'crypto';
 import { writeDataToFile, readDataFromFile } from './fileHelper';
 
 const ENCRYPT_ALGO = 'aes-256-cbc';
-const ENCODING = 'binary';
+const ENCODING = 'hex';
 const IV_DATA_DELIM = ':';
 // const SAMPLE_PASSWORD = 'helloworld123!helloworld123!1231';
 // const SAMPLE_DATA = {
@@ -15,7 +15,7 @@ const IV_DATA_DELIM = ':';
 //   }
 // };
 
-export const encrypt = (password: string, data: any): object => {
+const encrypt = (password: string, data: any): object => {
   let encrypted = null;
   const iv = crypto.randomBytes(16);
 
@@ -33,10 +33,7 @@ export const encrypt = (password: string, data: any): object => {
   }
 };
 
-export const decrypt = (
-  ivAndEncryptedData: string,
-  password: string
-): object => {
+const decrypt = (ivAndEncryptedData: string, password: string): object => {
   try {
     const iv = ivAndEncryptedData.split(IV_DATA_DELIM)[0];
     const encryptedData = ivAndEncryptedData.split(IV_DATA_DELIM)[1];
@@ -50,7 +47,9 @@ export const decrypt = (
       decipher.update(Buffer.from(encryptedData, ENCODING)),
       decipher.final()
     ]);
-    const obj = JSON.parse(decrypted.toString());
+    const obj = JSON.parse(
+      Buffer.from(decrypted.toString(), ENCODING).toString()
+    );
     return { data: obj };
   } catch (exception) {
     return { error: exception.message };
@@ -61,19 +60,17 @@ export const encryptToFile = (
   filepath: string,
   password: string,
   dataToEncrypt: object,
-  callback: any => any
+  successCallback: any => any = () => {
+    console.log('write success!');
+  }
 ): void => {
   const { data, error } = encrypt(password, dataToEncrypt);
   if (data) {
-    writeDataToFile(filepath, data).then(
-      result => {
-        console.log('write success : ', result);
-        callback();
-      },
-      error => {
-        console.log('write failed with error: ', error);
-      }
-    );
+    writeDataToFile(filepath, data).then(successCallback, error => {
+      console.log('write failure!');
+    });
+
+    // writeDataToFile(filepath, data);
   } else {
     // TODO: handle error case
     console.log('exception occured while encrypting: ', error);
@@ -83,13 +80,13 @@ export const encryptToFile = (
 export const decryptFromFile = (
   filepath: string,
   password: string,
-  callback: any => any
+  successCallback: any => any
 ): void => {
   readDataFromFile(filepath).then(
-    encryptedData => {
+    (encryptedData: Buffer) => {
       const { data, error } = decrypt(encryptedData, password);
       if (data) {
-        callback(data);
+        successCallback(data);
       } else {
         // TODO: handle error case
         console.log('exception occured while decrypting: ', error);

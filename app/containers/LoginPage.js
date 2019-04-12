@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import UILoginPage from 'components/Login/UILoginPage';
 
 // TODO: remove import after testing
-import { encrypt, decrypt } from 'utils/cipher';
+import { encryptToFile, decryptFromFile } from 'utils/cipher';
 
 const fs = window.require('fs');
 
@@ -31,15 +31,23 @@ const cipherTest = () => {
       arr: [1, 2, 3]
     }
   };
-  const { data: encryptedData, error } = encrypt(password, dataObj);
-  if (encryptedData) {
-    // console.log('encryptedData: ', encryptedData);
-    // const res = decrypt(encryptedData, password);
-    // console.log('encryptedData: ', encryptedData);
-    decrypt(encryptedData, password);
-  } else {
-    console.log(error);
-  }
+  const filepath = 'crypt.dat';
+  const encryptCallback = function() {};
+  encryptToFile(filepath, password, dataObj);
+  decryptFromFile(filepath, password, data => {
+    console.log('decrypted data: ', data);
+  });
+
+  // const { data: encryptedData, error } = encrypt(password, dataObj);
+  // if (encryptedData) {
+  //   const { data: decryptedData, error } = decrypt(encryptedData, password);
+
+  //   if (decryptedData) {
+  //     console.log('decryptedData: ', decryptedData);
+  //   }
+  // } else {
+  //   console.log(error);
+  // }
 };
 
 type Props = {};
