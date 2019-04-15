@@ -6,7 +6,7 @@ import { writeDataToFile, readDataFromFile } from './fileHelper';
 
 const ENCRYPT_ALGO = 'aes-256-cbc';
 const ENCODING = 'hex';
-const IV_DATA_DELIM = ':';
+const DELIM = ':';
 // const SAMPLE_PASSWORD = 'helloworld123!helloworld123!1231';
 // const SAMPLE_DATA = {
 //   key1: 'cool param',
@@ -15,17 +15,17 @@ const IV_DATA_DELIM = ':';
 //   }
 // };
 
-const encrypt = (password: string, data: any): object => {
+const encrypt = (key: string, data: any): object => {
   let encrypted = null;
   const iv = crypto.randomBytes(16);
 
   try {
-    let cipher = crypto.createCipheriv(ENCRYPT_ALGO, Buffer.from(password), iv);
+    let cipher = crypto.createCipheriv(ENCRYPT_ALGO, Buffer.from(key), iv);
     const dataToEncrypt = Buffer.from(JSON.stringify(data)).toString(ENCODING);
 
     encrypted = Buffer.concat([cipher.update(dataToEncrypt), cipher.final()]);
     const encryptedData =
-      iv.toString(ENCODING) + IV_DATA_DELIM + encrypted.toString(ENCODING);
+      iv.toString(ENCODING) + DELIM + encrypted.toString(ENCODING);
 
     return { data: encryptedData };
   } catch (exception) {
@@ -33,14 +33,15 @@ const encrypt = (password: string, data: any): object => {
   }
 };
 
-const decrypt = (ivAndEncryptedData: string, password: string): object => {
+const decrypt = (key: string, data: string): object => {
   try {
-    const iv = ivAndEncryptedData.split(IV_DATA_DELIM)[0];
-    const encryptedData = ivAndEncryptedData.split(IV_DATA_DELIM)[1];
+    const dataArr = data.split(DELIM);
+    const iv = dataArr[0];
+    const encryptedData = dataArr[1];
 
     let decipher = crypto.createDecipheriv(
       ENCRYPT_ALGO,
-      Buffer.from(password),
+      Buffer.from(key),
       Buffer.from(iv, ENCODING)
     );
     let decrypted = Buffer.concat([
@@ -56,44 +57,42 @@ const decrypt = (ivAndEncryptedData: string, password: string): object => {
   }
 };
 
-export const encryptToFile = (
+export const encryptToFile = async (
   filepath: string,
-  password: string,
-  dataToEncrypt: object,
-  successCallback: any => any = () => {
-    console.log('write success!');
-  }
+  key: string,
+  salt: string,
+  dataToEncrypt: object
 ): void => {
-  const { data, error } = encrypt(password, dataToEncrypt);
-  if (data) {
-    writeDataToFile(filepath, data).then(successCallback, error => {
-      console.log('write failure!');
-    });
-
-    // writeDataToFile(filepath, data);
-  } else {
-    // TODO: handle error case
-    console.log('exception occured while encrypting: ', error);
-  }
+  return new Promise((resolve, reject) => {
+    const { data, error } = encrypt(key, dataToEncrypt);
+    if (data) {
+      const saltAndData = salt + delim + data;
+      writeDataToFile(filepath, saltAndData).then(resolve(true), error => {
+        resolve(false);
+      });
+    } else {
+      // TODO: handle error case
+      resolve(false);
+      console.log('exception occured while encrypting: ', error);
+    }
+  });
 };
 
-export const decryptFromFile = (
-  filepath: string,
-  password: string,
-  successCallback: any => any
-): void => {
-  readDataFromFile(filepath).then(
-    (encryptedData: Buffer) => {
-      const { data, error } = decrypt(encryptedData, password);
-      if (data) {
-        successCallback(data);
-      } else {
-        // TODO: handle error case
-        console.log('exception occured while decrypting: ', error);
+export const decryptFromFile = async (filepath: string, key: string): void => {
+  return new Promise((resolve, reject) => {
+    readDataFromFile(filepath).then(
+      (encryptedData: Buffer) => {
+        const { data, salt, error } = decrypt(key, encryptedData);
+        if (data) {
+          resolve({ data, salt });
+        } else {
+          // TODO: handle error case
+          reject({ error });
+        }
+      },
+      error => {
+        reject({ error });
       }
-    },
-    error => {
-      console.log('error occured while reading file: ', error);
-    }
-  );
+    );
+  });
 };

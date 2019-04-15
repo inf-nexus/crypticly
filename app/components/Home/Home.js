@@ -8,6 +8,11 @@ import AddButton from './components/AddButton';
 import PasswordGroups from './components/passwordGroups/PasswordGroups';
 import PasswordConfigPanel from './components/passwordConfigPanel/PasswordConfigPanel';
 
+// TODO: remove import after testing
+// import { encryptToFile, decryptFromFile } from 'utils/cipher';
+// import { getDerivedKeyFromPassword } from 'utils/keyGen';
+import CryptManager from 'utils/CryptManager';
+
 const HomeContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -37,6 +42,15 @@ type State = {
   panelOpen: boolean
 };
 
+// TODO: for testing remove after
+const cryptManagerTest = async () => {
+  const password = 'helloWorld!';
+  const cryptManager = new CryptManager();
+
+  const initSuccess = await cryptManager.initCrypt(password);
+  console.log('initSuccess: ', initSuccess);
+};
+
 export default class Home extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
@@ -49,7 +63,8 @@ export default class Home extends PureComponent<Props, State> {
   }
 
   handleAddButtonClicked() {
-    this.setState({ panelOpen: true });
+    // this.setState({ panelOpen: true });
+    cryptManagerTest();
   }
 
   handlePanelClosed() {
