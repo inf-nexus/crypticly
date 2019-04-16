@@ -26,7 +26,9 @@ const DEFAULT_CRYPT = {
 // Action Types
 
 export const INIT_APP = 'INIT_APP';
+
 export const LOAD_CRYPT_FILE_DATA = 'LOAD_CRYPT_FILE_DATA';
+export const UPDATE_CRYPT_FILE_DATA = 'UPDATE_CRYPT_FILE_DATA';
 
 export const LOGIN_ATTEMPT = 'LOGIN_ATTEMPT'; // call as soon as user clicks submit
 /**
@@ -34,6 +36,19 @@ export const LOGIN_ATTEMPT = 'LOGIN_ATTEMPT'; // call as soon as user clicks sub
  */
 export const LOGIN_ATTEMPT_SUCCESS = 'LOGIN_ATTEMPT_SUCCESS';
 export const LOGIN_ATTEMPT_FAILED = 'LOGIN_ATTEMPT_FAILED';
+/**
+ * attempt to decrypt if crypt.dat present o/w create new crypt.dat
+ */
+
+export const INIT_CRYPT = 'INIT_CRYPT_SUCCESS';
+/**
+ * pass a key value pair to update nested credentials object
+ */
+export const UPDATE_CRYPT_CREDENTIALS = 'UPDATE_CRYPT_CREDENTIALS';
+
+export const CREATE_CRYPT_PASSWORD = 'ADD_CRYPT_PASSWORD';
+export const UPDATE_CRYPT_PASSWORD = 'UPDATE_CRYPT_PASSWORD';
+export const DELETE_CRYPT_PASSWORD = 'DELETE_CRYPT_PASSWORD';
 
 // Action Creators
 
