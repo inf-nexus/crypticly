@@ -36,17 +36,16 @@ export const LOGIN_ATTEMPT = 'LOGIN_ATTEMPT'; // call as soon as user clicks sub
  */
 export const LOGIN_ATTEMPT_SUCCESS = 'LOGIN_ATTEMPT_SUCCESS';
 export const LOGIN_ATTEMPT_FAILED = 'LOGIN_ATTEMPT_FAILED';
+
 /**
  * attempt to decrypt if crypt.dat present o/w create new crypt.dat
  */
-
 export const INIT_CRYPT = 'INIT_CRYPT_SUCCESS';
-/**
- * pass a key value pair to update nested credentials object
- */
+// pass array of key value pairs
 export const UPDATE_CRYPT_CREDENTIALS = 'UPDATE_CRYPT_CREDENTIALS';
 
-export const CREATE_CRYPT_PASSWORD = 'ADD_CRYPT_PASSWORD';
+export const CREATE_CRYPT_PASSWORD = 'CREATE_CRYPT_PASSWORD';
+// pass array of key value pairs
 export const UPDATE_CRYPT_PASSWORD = 'UPDATE_CRYPT_PASSWORD';
 export const DELETE_CRYPT_PASSWORD = 'DELETE_CRYPT_PASSWORD';
 
