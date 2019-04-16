@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react';
 import type { Node } from 'react';
 import { connect } from 'react-redux';
 
-import * as cryptActions from 'actions/crypt';
+import * as loginActions from 'actions/login';
 
 type Props = {
   children: Node,
@@ -25,6 +25,6 @@ class App extends Component<Props> {
 export default connect(
   (state, ownProps) => ({}),
   {
-    initApp: cryptActions.initApp
+    initApp: loginActions.initApp
   }
 )(App);

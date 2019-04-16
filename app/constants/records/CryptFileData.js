@@ -2,24 +2,18 @@
 
 import { Record, Map } from 'immutable';
 
-const DATA = 'data';
-const IV = 'iv';
-const SALT = 'salt';
-const ENCRYPED_DATA = 'encryptedData';
-
-export const CryptFileDataKeys = {
-  DATA,
-  IV,
-  SALT,
-  ENCRYPED_DATA
-};
+// CryptFileDataKeys
+export const DATA = 'data';
+export const IV = 'iv';
+export const SALT = 'salt';
+export const ENCRYPTED_DATA = 'encryptedData';
 
 class CryptFileData extends Record(
   {
     [DATA]: null,
     [IV]: null,
     [SALT]: null,
-    [ENCRYPED_DATA]: null
+    [ENCRYPTED_DATA]: null
   },
   'CryptFileData'
 ) {
@@ -38,10 +32,26 @@ class CryptFileData extends Record(
     }
 
     const modifiedPropMap = propMap.merge(
-      Map({ [IV]: iv, [SALT]: salt, [ENCRYPED_DATA]: encryptedData })
+      Map({ [IV]: iv, [SALT]: salt, [ENCRYPTED_DATA]: encryptedData })
     );
     console.log('modifiedPropMap: ', modifiedPropMap.toJS());
     super(modifiedPropMap);
+  }
+
+  getIv() {
+    return this[IV];
+  }
+
+  getSalt() {
+    return this[SALT];
+  }
+
+  getEncryptedData() {
+    return this[ENCRYPTED_DATA];
+  }
+
+  getData() {
+    return this[DATA];
   }
 }
 

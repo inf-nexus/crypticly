@@ -5,7 +5,11 @@ import { connect } from 'react-redux';
 
 import UILoginPage from 'components/Login/UILoginPage';
 
-type Props = {};
+import * as loginActions from 'actions/login';
+
+type Props = {
+  loginAttempt: any => any
+};
 
 type State = {
   authenticated: boolean
@@ -23,6 +27,8 @@ class LoginPage extends Component<Props, State> {
   }
 
   handleUserAuthentication(username: string, password: string) {
+    const { loginAttempt } = this.props;
+    loginAttempt(username, password);
     // TODO: password checking here
     // this.setState({ authenticated: true });
   }
@@ -38,4 +44,9 @@ class LoginPage extends Component<Props, State> {
   }
 }
 
-export default LoginPage;
+export default connect(
+  (state, ownProps) => ({}),
+  {
+    loginAttempt: loginActions.loginAttempt
+  }
+)(LoginPage);

@@ -1,15 +1,14 @@
 // @flow
 
-import { INIT_APP, LOAD_CRYPT_FILE_DATA } from 'actions/crypt';
+import { INIT_APP, LOAD_CRYPT_FILE_DATA } from 'actions/login';
 import CryptFileData from 'constants/records/CryptFileData';
 
 const initialState = {
-  cryptFileData: new CryptFileData(),
-  encryptedCrypt: null,
+  cryptFileData: null,
   crypt: null
 };
 
-export default function crypt(state = initialState, action) {
+export default function login(state = initialState, action) {
   switch (action.type) {
     case INIT_APP: {
       return state;
@@ -18,8 +17,8 @@ export default function crypt(state = initialState, action) {
     case LOAD_CRYPT_FILE_DATA: {
       const { cryptFileData } = action.payload;
       return {
-        cryptFileData,
-        ...state
+        ...state,
+        cryptFileData
       };
     }
 
