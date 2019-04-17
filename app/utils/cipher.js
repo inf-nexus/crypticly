@@ -7,13 +7,6 @@ import { writeDataToFile, readDataFromFile } from './fileHelper';
 const ENCRYPT_ALGO = 'aes-256-cbc';
 const ENCODING = 'hex';
 const DELIM = ':';
-// const SAMPLE_PASSWORD = 'helloworld123!helloworld123!1231';
-// const SAMPLE_DATA = {
-//   key1: 'cool param',
-//   key2: {
-//     arr: [1, 2, 3]
-//   }
-// };
 
 const encrypt = (key: string, data: any): object => {
   let encrypted = null;
@@ -24,10 +17,10 @@ const encrypt = (key: string, data: any): object => {
     const dataToEncrypt = Buffer.from(JSON.stringify(data)).toString(ENCODING);
 
     encrypted = Buffer.concat([cipher.update(dataToEncrypt), cipher.final()]);
-    const encryptedData =
-      iv.toString(ENCODING) + DELIM + encrypted.toString(ENCODING);
+    const encryptedData = encrypted.toString(ENCODING);
+    // iv.toString(ENCODING) + DELIM + encrypted.toString(ENCODING);
 
-    return { data: encryptedData };
+    return { data: encryptedData, iv: iv.toString(ENCODING) };
   } catch (exception) {
     return { error: exception.message };
   }
@@ -57,19 +50,22 @@ const decrypt = (key: string, data: string): object => {
   }
 };
 
-export const encryptToFile = async (
+export const encryptToFile = (
   filepath: string,
   key: string,
   salt: string,
   dataToEncrypt: object
 ): void => {
   return new Promise((resolve, reject) => {
-    const { data, error } = encrypt(key, dataToEncrypt);
+    const { data, iv, error } = encrypt(key, dataToEncrypt);
     if (data) {
-      const saltAndData = salt + delim + data;
-      writeDataToFile(filepath, saltAndData).then(resolve(true), error => {
-        resolve(false);
-      });
+      const ivSaltData = iv + delim + salt + delim + data;
+      writeDataToFile(filepath, ivSaltData).then(
+        resolve({ data, iv }),
+        error => {
+          resolve(error);
+        }
+      );
     } else {
       // TODO: handle error case
       resolve(false);

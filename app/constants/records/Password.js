@@ -1,43 +1,45 @@
 // @flow
 
-import { Record } from 'immutable';
+import { Record, Map } from 'immutable';
 
 import PasswordConfig, { PasswordConfigKeys } from './PasswordConfig';
 
+// PasswordKeys
+export const USERNAME = 'username';
+export const PASSWORD = 'password';
+export const NAME = 'name';
+export const URL = 'url';
+export const LAST_UPDATED = 'lastUpdated';
+export const GROUP = 'group';
+export const CONFIG = 'config';
+
 class Password extends Record(
   {
-    username: null,
-    password: null,
-    name: null,
-    url: null,
-    lastUpdated: null,
-    group: null,
-    config: new PasswordConfig()
+    [USERNAME]: null,
+    [PASSWORD]: null,
+    [NAME]: null,
+    [URL]: null,
+    [LAST_UPDATED]: null,
+    [GROUP]: null,
+    [CONFIG]: null
   },
   'Password'
 ) {
+  constructor(props) {
+    const propMap = new Map(props);
+
+    const config = new PasswordConfig(propMap.get(CONFIG));
+    const modifiedPropMap = propMap.merge({ [CONFIG]: config });
+
+    super(modifiedPropMap);
+  }
+
   getUsername() {
-    return this.username;
+    return this.USERNAME;
   }
 
   getPassword() {
-    return this.password;
-  }
-
-  setUsername(username) {
-    this.username = username;
-  }
-
-  setPassword(password) {
-    this.password = password;
-    this.upadatePasswordConfig(
-      PasswordConfigKeys.PASSWORD_LENGTH,
-      password.length
-    );
-  }
-
-  upadatePasswordConfig(key, value) {
-    this.config = this.config.set(key, value);
+    return this.PASSWORD;
   }
 }
 

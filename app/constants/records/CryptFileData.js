@@ -19,39 +19,37 @@ class CryptFileData extends Record(
 ) {
   constructor(props) {
     const propMap = Map(props);
-    const data = propMap.get(DATA);
+    let data = propMap.get(DATA);
     const splitData = data ? data.split(':') : null;
     let iv = null;
     let salt = null;
     let encryptedData = null;
 
-    if (splitData) {
+    if (splitData && splitData.length === 3) {
       iv = splitData[0];
       salt = splitData[1];
       encryptedData = splitData[2];
     }
-
     const modifiedPropMap = propMap.merge(
       Map({ [IV]: iv, [SALT]: salt, [ENCRYPTED_DATA]: encryptedData })
     );
-    console.log('modifiedPropMap: ', modifiedPropMap.toJS());
     super(modifiedPropMap);
   }
 
   getIv() {
-    return this[IV];
+    return this.IV;
   }
 
   getSalt() {
-    return this[SALT];
+    return this.SALT;
   }
 
   getEncryptedData() {
-    return this[ENCRYPTED_DATA];
+    return this.ENCRYPTED_DATA;
   }
 
   getData() {
-    return this[DATA];
+    return this.DATA;
   }
 }
 

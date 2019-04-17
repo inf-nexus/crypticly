@@ -12,22 +12,18 @@ import CryptFileData, {
   ENCRYPTED_DATA
 } from 'constants/records/CryptFileData';
 
+import Crypt from 'constants/records/Crypt';
+import Credentials from 'constants/records/Credentials';
+
 import * as loginSelectors from 'selectors/login';
 
 const CRYPT_FILE = 'crypt.dat';
 const ROOT_DIR = './';
-const DEFAULT_CRYPT = {
-  key1: {
-    val: 'cool val1'
-  },
-  key2: ['cool array']
-};
 
 // Action Types
 
 export const INIT_APP = 'INIT_APP';
 
-export const LOAD_CRYPT_FILE_DATA = 'LOAD_CRYPT_FILE_DATA';
 export const UPDATE_CRYPT_FILE_DATA = 'UPDATE_CRYPT_FILE_DATA';
 
 export const LOGIN_ATTEMPT = 'LOGIN_ATTEMPT'; // call as soon as user clicks submit
@@ -40,12 +36,12 @@ export const LOGIN_ATTEMPT_FAILED = 'LOGIN_ATTEMPT_FAILED';
 /**
  * attempt to decrypt if crypt.dat present o/w create new crypt.dat
  */
-export const INIT_CRYPT = 'INIT_CRYPT_SUCCESS';
-// pass array of key value pairs
+export const UPDATE_CRYPT = 'UPDATE_CRYPT';
+// pass map of key value pairs merge on
 export const UPDATE_CRYPT_CREDENTIALS = 'UPDATE_CRYPT_CREDENTIALS';
 
 export const CREATE_CRYPT_PASSWORD = 'CREATE_CRYPT_PASSWORD';
-// pass array of key value pairs
+// pass map of key value pairs to merge on
 export const UPDATE_CRYPT_PASSWORD = 'UPDATE_CRYPT_PASSWORD';
 export const DELETE_CRYPT_PASSWORD = 'DELETE_CRYPT_PASSWORD';
 
@@ -55,8 +51,8 @@ const onInitApp = () => ({
   type: INIT_APP
 });
 
-const onLoadCryptFileData = cryptFileData => ({
-  type: LOAD_CRYPT_FILE_DATA,
+const onUpdateCryptFileData = cryptFileData => ({
+  type: UPDATE_CRYPT_FILE_DATA,
   payload: {
     cryptFileData
   }
@@ -64,6 +60,21 @@ const onLoadCryptFileData = cryptFileData => ({
 
 const onLoginAttempt = () => ({
   type: LOGIN_ATTEMPT
+});
+
+const onLoginAttempSuccess = () => ({
+  type: LOGIN_ATTEMPT_SUCCESS
+});
+
+const onLoginAttemptFailed = () => ({
+  type: LOGIN_ATTEMPT_FAILED
+});
+
+const onUpdateCrypt = crypt => ({
+  type: UPDATE_CRYPT,
+  payload: {
+    crypt
+  }
 });
 
 // Actions
@@ -79,24 +90,52 @@ export const initApp = () => (dispatch, getState) => {
     } else {
       cryptFileData = new CryptFileData({ data: null });
     }
-    dispatch(onLoadCryptFileData(cryptFileData));
+    dispatch(onUpdateCryptFileData(cryptFileData));
   });
 };
 
 export const loginAttempt = (username, password) => (dispatch, getState) => {
   const state = getState();
   dispatch(onLoginAttempt());
-  const cryptFileData = loginSelectors.getCryptFileData(state);
+  let cryptFileData = loginSelectors.getCryptFileData(state);
   const rawData = cryptFileData.getData();
 
+  let crypt;
+  let error; // TODO: populate with reason why login has failed, pass to loginAttemptFailed
+
   if (rawData) {
-    // TODO: crypt.dat file exsists, use password + IV + SALT to decrypt
+    /**
+     * TODO: crypt.dat file exsists, use password + IV + SALT to decrypt
+     * call login failure here if crypt.dat decryption fails, then grab
+     * new iv, salt
+     */
   } else {
+    crypt = new Crypt({ credentials: { username, password } });
+    dispatch(onUpdateCrypt(crypt));
+    getDerivedKeyFromPassword(password).then(
+      ({ key, salt }) => {
+        encryptToFile(CRYPT_FILE, key, salt, crypt.toJS()).then(
+          ({ data: encryptedData, iv }) => {
+            cryptFileData = new CryptFileData({
+              data: [iv, salt, encryptedData].join(':')
+            });
+            dispatch(onUpdateCryptFileData(cryptFileData));
+            dispatch(onLoginAttemptSuccess());
+          },
+          error => {
+            // TODO: handle error
+          }
+        );
+      },
+      error => {
+        // TODO: handle error
+      }
+    );
+
+    // console.log('username: ', username, 'password: ', password);
     /**
      * TODO: crypt.dat file does not exsist, create new profile for user
      * generate derived key, salt, iv, crypt from scratch
      */
   }
-
-  console.log(cryptFileData);
 };

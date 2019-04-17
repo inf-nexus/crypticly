@@ -7,7 +7,7 @@ const DIGEST = 'sha512';
 const ITERATIONS = 100000;
 const KEY_LEN = 32; // for use with AES
 
-export const getDerivedKeyFromPassword = async (
+export const getDerivedKeyFromPassword = (
   password: string,
   salt: string = null
 ): object => {
@@ -22,9 +22,9 @@ export const getDerivedKeyFromPassword = async (
       (error, derivedKey) => {
         if (error) {
           console.log(error);
-          reject({ error });
+          reject(error);
         }
-        console.log(derivedKey);
+        // console.log(derivedKey);
         resolve({
           key: derivedKey.toString('hex'),
           salt: nextSalt.toString('hex')
