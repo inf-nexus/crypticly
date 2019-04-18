@@ -6,6 +6,7 @@ import { reject } from 'bluebird-lst';
 const DIGEST = 'sha512';
 const ITERATIONS = 100000;
 const KEY_LEN = 32; // for use with AES
+const ENCODING = 'hex';
 
 export const getDerivedKeyFromPassword = (
   password: string,
@@ -15,7 +16,7 @@ export const getDerivedKeyFromPassword = (
     const nextSalt = crypto.randomBytes(32);
     crypto.pbkdf2(
       password,
-      salt || nextSalt,
+      Buffer.from(salt, ENCODING) || nextSalt,
       ITERATIONS,
       KEY_LEN,
       DIGEST,

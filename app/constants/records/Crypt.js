@@ -28,11 +28,11 @@ class Crypt extends Record(
   }
 
   getPasswords() {
-    return this.PASSWORDS;
+    return [PASSWORDS];
   }
 
   getCredentials() {
-    return this.CREDENTIALS;
+    return this[CREDENTIALS];
   }
 }
 

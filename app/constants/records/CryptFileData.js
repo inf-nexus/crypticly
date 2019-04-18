@@ -37,19 +37,19 @@ class CryptFileData extends Record(
   }
 
   getIv() {
-    return this.IV;
+    return this[IV];
   }
 
   getSalt() {
-    return this.SALT;
+    return this[SALT];
   }
 
   getEncryptedData() {
-    return this.ENCRYPTED_DATA;
+    return this[ENCRYPTED_DATA];
   }
 
   getData() {
-    return this.DATA;
+    return this[DATA];
   }
 }
 

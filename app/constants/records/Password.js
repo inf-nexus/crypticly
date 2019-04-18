@@ -35,11 +35,11 @@ class Password extends Record(
   }
 
   getUsername() {
-    return this.USERNAME;
+    return this[USERNAME];
   }
 
   getPassword() {
-    return this.PASSWORD;
+    return this[PASSWORD];
   }
 }
 

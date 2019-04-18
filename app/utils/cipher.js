@@ -13,7 +13,11 @@ const encrypt = (key: string, data: any): object => {
   const iv = crypto.randomBytes(16);
 
   try {
-    let cipher = crypto.createCipheriv(ENCRYPT_ALGO, Buffer.from(key), iv);
+    let cipher = crypto.createCipheriv(
+      ENCRYPT_ALGO,
+      Buffer.from(key, ENCODING),
+      iv
+    );
     const dataToEncrypt = Buffer.from(JSON.stringify(data)).toString(ENCODING);
 
     encrypted = Buffer.concat([cipher.update(dataToEncrypt), cipher.final()]);
@@ -26,15 +30,19 @@ const encrypt = (key: string, data: any): object => {
   }
 };
 
-const decrypt = (key: string, data: string): object => {
+export const decrypt = (
+  key: string,
+  iv: string,
+  encryptedData: string
+): object => {
   try {
-    const dataArr = data.split(DELIM);
-    const iv = dataArr[0];
-    const encryptedData = dataArr[1];
+    // const dataArr = data.split(DELIM);
+    // const iv = dataArr[0];
+    // const encryptedData = dataArr[1];
 
     let decipher = crypto.createDecipheriv(
       ENCRYPT_ALGO,
-      Buffer.from(key),
+      Buffer.from(key, ENCODING),
       Buffer.from(iv, ENCODING)
     );
     let decrypted = Buffer.concat([
@@ -57,9 +65,10 @@ export const encryptToFile = (
   dataToEncrypt: object
 ): void => {
   return new Promise((resolve, reject) => {
+    // console.log('byte size: ', Buffer.from(key).byteLength('hex'));
     const { data, iv, error } = encrypt(key, dataToEncrypt);
     if (data) {
-      const ivSaltData = iv + delim + salt + delim + data;
+      const ivSaltData = iv + DELIM + salt + DELIM + data;
       writeDataToFile(filepath, ivSaltData).then(
         resolve({ data, iv }),
         error => {
@@ -74,21 +83,21 @@ export const encryptToFile = (
   });
 };
 
-export const decryptFromFile = async (filepath: string, key: string): void => {
-  return new Promise((resolve, reject) => {
-    readDataFromFile(filepath).then(
-      (encryptedData: Buffer) => {
-        const { data, salt, error } = decrypt(key, encryptedData);
-        if (data) {
-          resolve({ data, salt });
-        } else {
-          // TODO: handle error case
-          reject({ error });
-        }
-      },
-      error => {
-        reject({ error });
-      }
-    );
-  });
-};
+// export const decryptFromFile = async (filepath: string, key: string): void => {
+//   return new Promise((resolve, reject) => {
+//     readDataFromFile(filepath).then(
+//       (encryptedData: Buffer) => {
+//         const { data, salt, error } = decrypt(key, encryptedData);
+//         if (data) {
+//           resolve({ data, salt });
+//         } else {
+//           // TODO: handle error case
+//           reject({ error });
+//         }
+//       },
+//       error => {
+//         reject({ error });
+//       }
+//     );
+//   });
+// };

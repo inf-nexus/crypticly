@@ -59,4 +59,7 @@ npm-debug.log.*
 .github
 .vscode
 
+# crypticly generated files
+crypt.dat
+
 package-lock.json
