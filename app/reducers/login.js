@@ -15,7 +15,7 @@ const initialState = {
   cryptFileData: null,
   crypt: null,
   loginStatus: statusStates.UNINITIALIZED,
-  errors: [] // TODO: set up logic to populate this
+  error: null
 };
 
 export default function login(state = initialState, action) {
@@ -55,9 +55,11 @@ export default function login(state = initialState, action) {
     }
 
     case LOGIN_ATTEMPT_FAILED: {
+      const { error } = action.payload;
       return {
         ...state,
-        loginStatus: statusStates.FAILED
+        loginStatus: statusStates.FAILED,
+        error
       };
     }
 

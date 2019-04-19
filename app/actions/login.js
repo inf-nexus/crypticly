@@ -66,8 +66,11 @@ const onLoginAttemptSuccess = () => ({
   type: LOGIN_ATTEMPT_SUCCESS
 });
 
-const onLoginAttemptFailed = () => ({
-  type: LOGIN_ATTEMPT_FAILED
+const onLoginAttemptFailed = error => ({
+  type: LOGIN_ATTEMPT_FAILED,
+  payload: {
+    error
+  }
 });
 
 const onUpdateCrypt = crypt => ({
@@ -99,39 +102,31 @@ export const loginAttempt = (username, password) => (dispatch, getState) => {
   dispatch(onLoginAttempt());
   let cryptFileData = loginSelectors.getCryptFileData(state);
 
-  let crypt;
-  let error; // TODO: populate with reason why login has failed, pass to loginAttemptFailed
+  const usernameAndPassword = username + password;
 
   if (cryptFileData.getEncryptedData()) {
     const iv = cryptFileData.getIv();
     const salt = cryptFileData.getSalt();
     const encryptedData = cryptFileData.getEncryptedData();
-
-    getDerivedKeyFromPassword(password, salt).then(
+    getDerivedKeyFromPassword(usernameAndPassword, salt).then(
       ({ key }) => {
         const { data: decryptedData, error } = decrypt(key, iv, encryptedData);
         if (error) {
-          // TODO dispatch failed with wrong password
-          console.log('error occured during decryption: ', error);
+          dispatch(onLoginAttemptFailed(error.message));
         } else {
-          console.log('decryptedData: ', decryptedData);
+          const crypt = new Crypt(decryptedData);
+          dispatch(onUpdateCrypt(crypt));
+          dispatch(onLoginAttemptSuccess());
         }
       },
       error => {
-        // TODO: handle error
-        console.log('error generating derivedKey: ', error);
+        dispatch(onLoginAttemptFailed(error.message));
       }
     );
-
-    /**
-     * TODO: crypt.dat file exsists, use password + IV + SALT to decrypt
-     * call login failure here if crypt.dat decryption fails, then grab
-     * new iv, salt
-     */
   } else {
-    crypt = new Crypt({ credentials: { username, password } });
+    const crypt = new Crypt({ credentials: { username, password } });
     dispatch(onUpdateCrypt(crypt));
-    getDerivedKeyFromPassword(password).then(
+    getDerivedKeyFromPassword(usernameAndPassword).then(
       ({ key, salt }) => {
         encryptToFile(CRYPT_FILE, key, salt, crypt.toJS()).then(
           ({ data: encryptedData, iv }) => {
@@ -142,21 +137,13 @@ export const loginAttempt = (username, password) => (dispatch, getState) => {
             dispatch(onLoginAttemptSuccess());
           },
           error => {
-            // TODO: handle error
-            console.log('error encrypting file: ', error);
+            dispatch(onLoginAttemptFailed(error.message));
           }
         );
       },
       error => {
-        // TODO: handle error
-        console.log('error generating derivedKey: ', error);
+        dispatch(onLoginAttemptFailed(error.message));
       }
     );
-
-    // console.log('username: ', username, 'password: ', password);
-    /**
-     * TODO: crypt.dat file does not exsist, create new profile for user
-     * generate derived key, salt, iv, crypt from scratch
-     */
   }
 };

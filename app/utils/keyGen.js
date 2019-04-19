@@ -13,10 +13,11 @@ export const getDerivedKeyFromPassword = (
   salt: string = null
 ): object => {
   return new Promise((resolve, reject) => {
-    const nextSalt = crypto.randomBytes(32);
+    const _salt =
+      (salt && Buffer.from(salt, ENCODING)) || crypto.randomBytes(32);
     crypto.pbkdf2(
       password,
-      Buffer.from(salt, ENCODING) || nextSalt,
+      _salt,
       ITERATIONS,
       KEY_LEN,
       DIGEST,
@@ -28,7 +29,7 @@ export const getDerivedKeyFromPassword = (
         // console.log(derivedKey);
         resolve({
           key: derivedKey.toString('hex'),
-          salt: nextSalt.toString('hex')
+          salt: _salt.toString('hex')
         });
       }
     );
