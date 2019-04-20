@@ -20,7 +20,6 @@ const PanelHeaderContainer = styled.div`
 
 const PanelContentContainer = styled.div`
   flex: 9;
-  // height: 85vh;
   width: 400px;
   padding: 20px;
 `;
