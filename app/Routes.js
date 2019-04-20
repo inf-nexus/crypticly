@@ -6,7 +6,6 @@ import Routes from 'constants/Routes';
 import App from 'containers/App';
 import LoginPage from 'containers/LoginPage';
 import HomePage from 'containers/HomePage';
-import CounterPage from 'containers/CounterPage';
 
 import Paper from '@material-ui/core/Paper';
 
@@ -32,7 +31,6 @@ export default () => (
       <DraggableRegion />
       <Switch>
         <Route path={Routes.LOGIN} component={LoginPage} />
-        <Route path={Routes.COUNTER} component={CounterPage} />
         <Route path={Routes.HOME} component={HomePage} />
       </Switch>
       <Redirect to={Routes.HOME} />
