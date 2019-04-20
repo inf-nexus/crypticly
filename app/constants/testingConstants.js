@@ -1,3 +1,5 @@
+import Password from 'constants/records/Password';
+
 const password1 = {
   username: 'foo',
   password: 'bar',

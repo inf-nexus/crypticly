@@ -43,18 +43,11 @@ export default class Home extends PureComponent<Props, State> {
     this.state = {
       panelOpen: false
     };
-
-    this.handleAddButtonClicked = this.handleAddButtonClicked.bind(this);
-    this.handlePanelClosed = this.handlePanelClosed.bind(this);
   }
 
-  handleAddButtonClicked() {
-    this.setState({ panelOpen: true });
-  }
-
-  handlePanelClosed() {
-    this.setState({ panelOpen: false });
-  }
+  handleTogglePanel = () => {
+    this.setState(prevState => ({ panelOpen: !prevState.panelOpen }));
+  };
 
   render() {
     const { panelOpen } = this.state;
@@ -66,12 +59,12 @@ export default class Home extends PureComponent<Props, State> {
         </PasswordsContainer>
         <AddButtonContainer>
           <AddButtonStyleWrapper>
-            <AddButton onClick={this.handleAddButtonClicked} />
+            <AddButton onClick={this.handleTogglePanel} />
           </AddButtonStyleWrapper>
         </AddButtonContainer>
         <PasswordConfigPanel
-          open={panelOpen}
-          onClose={this.handlePanelClosed}
+          panelOpen={panelOpen}
+          onHandleTogglePanel={this.handleTogglePanel}
         />
       </HomeContainer>
     );
