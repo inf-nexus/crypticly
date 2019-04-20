@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import UILoginPage from 'components/Login/UILoginPage';
 
 import * as loginActions from 'actions/login';
+import * as loginSelectors from 'selectors/login';
+import * as statusStates from 'constants/statusStates.js';
 
 type Props = {
   loginAttempt: any => any
@@ -19,22 +21,16 @@ class LoginPage extends Component<Props, State> {
   constructor(props) {
     super(props);
 
-    this.state = {
-      authenticated: false
-    };
-
     this.handleUserAuthentication = this.handleUserAuthentication.bind(this);
   }
 
   handleUserAuthentication(username: string, password: string) {
     const { loginAttempt } = this.props;
     loginAttempt(username, password);
-    // TODO: password checking here
-    // this.setState({ authenticated: true });
   }
 
   render() {
-    const { authenticated } = this.state;
+    const { authenticated } = this.props;
     return (
       <UILoginPage
         authenticated={authenticated}
@@ -45,7 +41,9 @@ class LoginPage extends Component<Props, State> {
 }
 
 export default connect(
-  (state, ownProps) => ({}),
+  (state, ownProps) => ({
+    authenticated: loginSelectors.getLoginStatus(state) === statusStates.SUCCESS
+  }),
   {
     loginAttempt: loginActions.loginAttempt
   }
