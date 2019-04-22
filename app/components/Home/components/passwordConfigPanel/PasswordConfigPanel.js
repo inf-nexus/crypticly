@@ -7,6 +7,7 @@ import Drawer from '@material-ui/core/Drawer';
 
 import PanelHeader from './PanelHeader';
 import PasswordFormContent from './configContent/PasswordFormContent';
+import PasswordGeneratorContent from './configContent/PasswordGeneratorContent';
 
 const DrawerContainer = styled.div`
   display: flex;
@@ -20,7 +21,7 @@ const PanelHeaderContainer = styled.div`
 
 const PanelContentContainer = styled.div`
   flex: 9;
-  width: 400px;
+  width: 350px;
   padding: 20px;
 `;
 
@@ -49,7 +50,9 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
             <PanelHeader onHandleTogglePanel={onHandleTogglePanel} />
           </PanelHeaderContainer>
           <PanelContentContainer>
-            <PasswordFormContent />
+            {/**TODO: put a Switch here for routing */}
+            {/* <PasswordFormContent /> */}
+            <PasswordGeneratorContent />
           </PanelContentContainer>
         </DrawerContainer>
       </Drawer>

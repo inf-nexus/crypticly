@@ -2,9 +2,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-
 import UIFormInput from 'ui-components/UIFormInput';
 import UIButton from 'ui-components/UIButton';
 
