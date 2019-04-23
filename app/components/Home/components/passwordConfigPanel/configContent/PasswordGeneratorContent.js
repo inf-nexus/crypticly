@@ -22,6 +22,12 @@ const PasswordGeneratorContentContainer = styled.form`
 
 const Slider = styled(MUISlider)`
   width: 300px;
+  align-self: center;
+`;
+
+const PasswordViewer = styled(Typography)`
+  align-self: center;
+  text-align: center;
 `;
 
 const PASSWORD = 'Hello World Cool Password';
@@ -50,9 +56,9 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
         letters: true,
         numbers: true,
         specialCharacters: true,
-        uppercase: true,
-        manualEntry: false
-      }
+        uppercase: true
+      },
+      manualEntry: false
     };
   }
 
@@ -66,14 +72,19 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
     }));
   };
 
+  handleToggleManualEntry = () => {
+    this.setState(({ manualEntry }) => ({ manualEntry: !manualEntry }));
+  };
+
   render() {
     const {
       sliderValue,
       enabled: { letters, numbers, specialCharacters, uppercase, manualEntry }
     } = this.state;
+    console.log('rendering password generator content');
     return (
       <PasswordGeneratorContentContainer>
-        <Typography textAlign="center">{PASSWORD}</Typography>
+        <PasswordViewer>{PASSWORD}</PasswordViewer>
         <Slider value={sliderValue} onChange={this.handleSliderChange} />
         <FormControl component="fieldset">
           {/* <FormLabel component="legend">Assign responsibility</FormLabel> */}
@@ -84,6 +95,7 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
                   checked={letters}
                   onChange={this.handleToggleEnabledValue(LETTERS)}
                   value={LETTERS}
+                  color="primary"
                 />
               }
               label="Letters"
@@ -94,6 +106,7 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
                   checked={numbers}
                   onChange={this.handleToggleEnabledValue(NUMBERS)}
                   value={NUMBERS}
+                  color="primary"
                 />
               }
               label="Numbers"
@@ -104,6 +117,7 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
                   checked={specialCharacters}
                   onChange={this.handleToggleEnabledValue(SPECIAL_CHARACTERS)}
                   value={SPECIAL_CHARACTERS}
+                  color="primary"
                 />
               }
               label="Special Characters"
@@ -114,6 +128,7 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
                   checked={uppercase}
                   onChange={this.handleToggleEnabledValue(UPPERCASE)}
                   value={UPPERCASE}
+                  color="primary"
                 />
               }
               label="Uppercase"
@@ -122,8 +137,9 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
               control={
                 <Checkbox
                   checked={manualEntry}
-                  onChange={this.handleToggleEnabledValue(MANUAL_ENTRY)}
+                  onChange={this.handleToggleManualEntry}
                   value={MANUAL_ENTRY}
+                  color="primary"
                 />
               }
               label="Manual Entry"

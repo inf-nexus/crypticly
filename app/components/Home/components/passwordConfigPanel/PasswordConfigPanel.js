@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import type { Node } from 'react';
+import { Switch, Route, Redirect } from 'react-router';
 import styled from 'styled-components';
 
 import Drawer from '@material-ui/core/Drawer';
@@ -8,6 +9,10 @@ import Drawer from '@material-ui/core/Drawer';
 import PanelHeader from './PanelHeader';
 import PasswordFormContent from './configContent/PasswordFormContent';
 import PasswordGeneratorContent from './configContent/PasswordGeneratorContent';
+
+import Password from 'constants/records/Password';
+
+import routes from 'constants/routes';
 
 const DrawerContainer = styled.div`
   display: flex;
@@ -31,13 +36,47 @@ type Props = {
   onHandleTogglePanel: () => void
 };
 
-type State = {
-  panelOpen: boolean
-};
+type State = {};
 
 class PasswordConfigPanel extends PureComponent<Props, State> {
+  constructor(props) {
+    super(props);
+
+    const { password } = this.props;
+
+    this.state = {
+      stagedPassword: password || new Password()
+    };
+  }
+
+  handleStagedPasswordUpdate = (recordKey, recordVal) => {
+    this.setState(({ stagedPassword }) => ({
+      stagedPassword: stagedPassword.set(recordKey, recordVal)
+    }));
+  };
+
+  handleSave() {
+    /**
+     * TODO:
+     * I. check to see if group exsists, if true merge into exsisting
+     * password group if false create a new group and add to password list
+     *
+     * II. after updating Crypt object, dispatch action to encrypt the current
+     * Crypt to crypt.dat (later try more resiliant soln i.e. writing to a
+     * temporary file and on success copy the contents to real file and delete
+     * temporary one)
+     *
+     */
+  }
+
   render() {
-    const { panelOpen, onHandleTogglePanel, content } = this.props;
+    const {
+      panelOpen,
+      onHandleTogglePanel,
+      content,
+      stagedPassword,
+      stagedPasswordGroupName
+    } = this.props;
     return (
       <Drawer anchor="right" open={panelOpen} onClose={onHandleTogglePanel}>
         <DrawerContainer
@@ -49,10 +88,29 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
           <PanelHeaderContainer>
             <PanelHeader onHandleTogglePanel={onHandleTogglePanel} />
           </PanelHeaderContainer>
+
           <PanelContentContainer>
-            {/**TODO: put a Switch here for routing */}
-            {/* <PasswordFormContent /> */}
-            <PasswordGeneratorContent />
+            <PasswordFormContent
+              stagedPassword={stagedPassword}
+              onHandleStagedPasswordUpdate={this.handleStagedPasswordUpdate}
+            />
+            {/* <PasswordGeneratorContent
+              stagedPassword={stagedPassword}
+              onHandleStagedPasswordUpdate={this.handleStagedPasswordUpdate}
+            /> */}
+            {/* <Switch>
+              <Route
+                exact
+                path={routes.PASSWORD_FORM}
+                render={() => <PasswordFormContent />}
+              />
+              <Route
+                exact
+                path={routes.PASSWORD_GENERATOR}
+                render={() => <PasswordGeneratorContent />}
+              />
+              <Redirect to={routes.PASSWORD_FORM} push />
+            </Switch> */}
           </PanelContentContainer>
         </DrawerContainer>
       </Drawer>

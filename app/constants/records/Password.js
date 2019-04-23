@@ -4,6 +4,8 @@ import { Record, Map } from 'immutable';
 
 import PasswordConfig, { PasswordConfigKeys } from './PasswordConfig';
 
+const DEFAULT_PASSWORD_LENGTH = 15;
+
 // PasswordKeys
 export const USERNAME = 'username';
 export const PASSWORD = 'password';
@@ -12,6 +14,11 @@ export const URL = 'url';
 export const LAST_UPDATED = 'lastUpdated';
 export const GROUP = 'group';
 export const CONFIG = 'config';
+export const PASSWORD_LENGTH = 'passwordLength';
+export const LETTERS_ENABLED = 'lettersEnabled';
+export const NUMS_ENABLED = 'numsEnabled';
+export const SPECIAL_CHARS_ENABLED = 'specialCharsEnabled';
+export const UPPERCASE_ENABLED = 'uppercaseEnabled';
 
 class Password extends Record(
   {
@@ -21,7 +28,11 @@ class Password extends Record(
     [URL]: null,
     [LAST_UPDATED]: null,
     [GROUP]: null,
-    [CONFIG]: null
+    [PASSWORD_LENGTH]: DEFAULT_PASSWORD_LENGTH,
+    [LETTERS_ENABLED]: true,
+    [NUMS_ENABLED]: true,
+    [SPECIAL_CHARS_ENABLED]: true,
+    [UPPERCASE_ENABLED]: true
   },
   'Password'
 ) {
@@ -40,6 +51,42 @@ class Password extends Record(
 
   getPassword() {
     return this[PASSWORD];
+  }
+
+  getName() {
+    return this[NAME];
+  }
+
+  getUrl() {
+    return this[URL];
+  }
+
+  getLastUpdated() {
+    return this[LAST_UPDATED];
+  }
+
+  getGroup() {
+    return this[GROUP];
+  }
+
+  getPasswordLength() {
+    return this[PASSWORD_LENGTH];
+  }
+
+  getLettersEnabled() {
+    return this[LETTERS_ENABLED];
+  }
+
+  getNumsEnabled() {
+    return this[NUMS_ENABLED];
+  }
+
+  getSpecialCharsEnabled() {
+    return this[SPECIAL_CHARS_ENABLED];
+  }
+
+  getUpperCaseEnabled() {
+    return this[UPPERCASE_ENABLED];
   }
 }
 

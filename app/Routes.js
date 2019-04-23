@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router';
 import styled from 'styled-components';
 
-import Routes from 'constants/Routes';
+import routes from 'constants/routes';
 import App from 'containers/App';
 import LoginPage from 'containers/LoginPage';
 import HomePage from 'containers/HomePage';
@@ -30,10 +30,10 @@ export default () => (
     <StyledContainer>
       <DraggableRegion />
       <Switch>
-        <Route path={Routes.LOGIN} component={LoginPage} />
-        <Route path={Routes.HOME} component={HomePage} />
+        <Route path={routes.LOGIN} component={LoginPage} />
+        <Route path={routes.HOME} component={HomePage} />
       </Switch>
-      <Redirect to={Routes.HOME} />
+      <Redirect to={routes.HOME} />
     </StyledContainer>
   </App>
 );
