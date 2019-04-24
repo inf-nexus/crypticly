@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import type { Node } from 'react';
-import { Switch, Route, Redirect } from 'react-router';
+import { Switch, Route, Redirect, withRouter } from 'react-router';
 import styled from 'styled-components';
 import R from 'ramda';
 
@@ -93,8 +93,13 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
   }
 
   render() {
-    const { panelOpen, onHandleTogglePanel, content } = this.props;
+    const { panelOpen, onHandleTogglePanel, content, history } = this.props;
     const { stagedPassword } = this.state;
+
+    if (!panelOpen) {
+      console.log('here');
+      return null;
+    }
 
     return (
       <Drawer anchor="right" open={panelOpen} onClose={onHandleTogglePanel}>
@@ -113,7 +118,7 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
               stagedPassword={stagedPassword}
               onHandleStagedPasswordUpdate={this.handleStagedPasswordUpdate}
             /> */}
-            <PasswordGeneratorContent
+            {/* <PasswordGeneratorContent
               stagedPassword={stagedPassword}
               onHandleStagedPasswordBoolToggleUpdate={
                 this.handleStagedPasswordBoolToggleUpdate
@@ -121,20 +126,35 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
               onHandleStagedPasswordLengthUpdate={
                 this.handleStagedPasswordLengthUpdate
               }
-            />
-            {/* <Switch>
+            /> */}
+            <Switch>
               <Route
-                exact
                 path={routes.PASSWORD_FORM}
-                render={() => <PasswordFormContent />}
+                render={() => (
+                  <PasswordFormContent
+                    stagedPassword={stagedPassword}
+                    onHandleStagedPasswordUpdate={
+                      this.handleStagedPasswordUpdate
+                    }
+                  />
+                )}
               />
               <Route
-                exact
                 path={routes.PASSWORD_GENERATOR}
-                render={() => <PasswordGeneratorContent />}
+                render={() => (
+                  <PasswordGeneratorContent
+                    stagedPassword={stagedPassword}
+                    onHandleStagedPasswordBoolToggleUpdate={
+                      this.handleStagedPasswordBoolToggleUpdate
+                    }
+                    onHandleStagedPasswordLengthUpdate={
+                      this.handleStagedPasswordLengthUpdate
+                    }
+                  />
+                )}
               />
-              <Redirect to={routes.PASSWORD_FORM} push />
-            </Switch> */}
+              <Redirect to={routes.PASSWORD_FORM} />
+            </Switch>
           </PanelContentContainer>
         </DrawerContainer>
       </Drawer>
@@ -142,4 +162,4 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
   }
 }
 
-export default PasswordConfigPanel;
+export default withRouter(PasswordConfigPanel);

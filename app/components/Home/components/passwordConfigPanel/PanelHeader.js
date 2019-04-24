@@ -2,6 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import { withRouter } from 'react-router';
 
 import MUIPaper from '@material-ui/core/Paper';
 import MUIIconButton from '@material-ui/core/IconButton';
@@ -42,7 +43,7 @@ type State = {};
 
 class PanelHeader extends PureComponent<Props, State> {
   render() {
-    const { onHandleTogglePanel } = this.props;
+    const { onHandleTogglePanel, history } = this.props;
     return (
       <Paper>
         <PanelHeaderContentContainer />
@@ -54,4 +55,4 @@ class PanelHeader extends PureComponent<Props, State> {
   }
 }
 
-export default PanelHeader;
+export default withRouter(PanelHeader);

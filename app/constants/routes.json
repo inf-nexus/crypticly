@@ -1,6 +1,7 @@
 {
   "LOGIN": "/login",
   "HOME": "/home",
-  "PASSWORD_FORM":"/home/form",
-  "PASSWORD_GENERATOR": "/home/generator"
+  "PASSWORD": "/home/password",
+  "PASSWORD_FORM":"/home/password/form",
+  "PASSWORD_GENERATOR": "/home/password/generator"
 }

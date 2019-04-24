@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { partial } from 'lodash';
 
@@ -25,7 +25,7 @@ const PasswordFormContentContainer = styled.form`
 `;
 
 type Props = {
-  stagedPassword: any,
+  stagedPassword: object,
   onHandleStagedPasswordUpdate: (recordKey: string) => (event: any) => void
 };
 
@@ -84,7 +84,7 @@ class PasswordFormContent extends PureComponent<Props, State> {
         />
         <UIButton
           title={GENERATE_PASSWORD}
-          // onClick={this.handleGeneratePasswordClicked}
+          onClick={this.handleGeneratePasswordClicked}
         />
       </PasswordFormContentContainer>
     );

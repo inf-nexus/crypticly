@@ -1,5 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
+import { withRouter, Route } from 'react-router';
 import { Link } from 'react-router-dom';
 import routes from 'constants/routes';
 import styled from 'styled-components';
@@ -37,7 +38,7 @@ type State = {
   panelOpen: boolean
 };
 
-export default class Home extends PureComponent<Props, State> {
+class Home extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -46,7 +47,19 @@ export default class Home extends PureComponent<Props, State> {
   }
 
   handleTogglePanel = () => {
-    this.setState(prevState => ({ panelOpen: !prevState.panelOpen }));
+    const { history } = this.props;
+
+    this.setState(
+      prevState => ({ panelOpen: !prevState.panelOpen }),
+      () => {
+        const { panelOpen } = this.state;
+        if (panelOpen) {
+          history.push(routes.PASSWORD);
+        } else {
+          history.push(routes.HOME);
+        }
+      }
+    );
   };
 
   render() {
@@ -62,11 +75,18 @@ export default class Home extends PureComponent<Props, State> {
             <AddButton onClick={this.handleTogglePanel} />
           </AddButtonStyleWrapper>
         </AddButtonContainer>
-        <PasswordConfigPanel
-          panelOpen={panelOpen}
-          onHandleTogglePanel={this.handleTogglePanel}
+        <Route
+          path={routes.PASSWORD}
+          render={() => (
+            <PasswordConfigPanel
+              panelOpen={panelOpen}
+              onHandleTogglePanel={this.handleTogglePanel}
+            />
+          )}
         />
       </HomeContainer>
     );
   }
 }
+
+export default withRouter(Home);

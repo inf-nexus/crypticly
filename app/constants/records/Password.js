@@ -21,12 +21,12 @@ export const MANUAL_ENTRY_ENABLED = 'manualEntryEnabled';
 
 class Password extends Record(
   {
-    [USERNAME]: null,
-    [PASSWORD]: null,
-    [NAME]: null,
-    [URL]: null,
+    [USERNAME]: '',
+    [PASSWORD]: '',
+    [NAME]: '',
+    [URL]: '',
     [LAST_UPDATED]: null,
-    [GROUP]: null,
+    [GROUP]: '',
     [PASSWORD_LENGTH]: DEFAULT_PASSWORD_LENGTH,
     [LETTERS_ENABLED]: true,
     [NUMS_ENABLED]: true,
