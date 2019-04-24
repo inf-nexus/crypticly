@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import { partial } from 'lodash';
 
 import UIFormInput from 'ui-components/UIFormInput';
 import UIButton from 'ui-components/UIButton';
@@ -25,7 +26,7 @@ const PasswordFormContentContainer = styled.form`
 
 type Props = {
   stagedPassword: any,
-  onHandleStagedPasswordUpdate: (recordKey: string, recordVal: any) => void
+  onHandleStagedPasswordUpdate: (recordKey: string) => (event: any) => void
 };
 
 type State = {};
@@ -50,7 +51,6 @@ class PasswordFormContent extends PureComponent<Props, State> {
     const {
       stagedPasswordGroupName,
       stagedPassword,
-      onHandleStagedPasswordGroupNameUpdate,
       onHandleStagedPasswordUpdate
     } = this.props;
     const { valid } = this.state;
@@ -65,22 +65,22 @@ class PasswordFormContent extends PureComponent<Props, State> {
         <UIFormInput
           label={NAME}
           value={name}
-          // onChange={partial(this.handleInputUpdate, 'username')}
+          onChange={onHandleStagedPasswordUpdate(passwordKeys.NAME)}
         />
         <UIFormInput
           label={URL}
           value={url}
-          // onChange={partial(this.handleInputUpdate, 'password')}
+          onChange={onHandleStagedPasswordUpdate(passwordKeys.URL)}
         />
         <UIFormInput
           label={USER_NAME}
           value={username}
-          // onChange={partial(this.handleInputUpdate, 'password')}
+          onChange={onHandleStagedPasswordUpdate(passwordKeys.USERNAME)}
         />
         <UIFormInput
           label={GROUP}
           value={group}
-          // onChange={partial(this.handleInputUpdate, 'password')}
+          onChange={onHandleStagedPasswordUpdate(passwordKeys.GROUP)}
         />
         <UIButton
           title={GENERATE_PASSWORD}

@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import type { Node } from 'react';
 import { Switch, Route, Redirect } from 'react-router';
 import styled from 'styled-components';
+import R from 'ramda';
 
 import Drawer from '@material-ui/core/Drawer';
 
@@ -11,6 +12,7 @@ import PasswordFormContent from './configContent/PasswordFormContent';
 import PasswordGeneratorContent from './configContent/PasswordGeneratorContent';
 
 import Password from 'constants/records/Password';
+import * as passwordKeys from 'constants/records/Password';
 
 import routes from 'constants/routes';
 
@@ -49,9 +51,30 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
     };
   }
 
-  handleStagedPasswordUpdate = (recordKey, recordVal) => {
+  // componentDidUpdate() {
+  //   console.log('stagedPassword: ', this.state.stagedPassword.toJS());
+  // }
+
+  handleStagedPasswordUpdate = key => event => {
+    const value = R.path(['target', 'value'])(event);
     this.setState(({ stagedPassword }) => ({
-      stagedPassword: stagedPassword.set(recordKey, recordVal)
+      stagedPassword: stagedPassword.set(key, value)
+    }));
+  };
+
+  handleStagedPasswordLengthUpdate = (_, value: number) => {
+    this.setState(({ stagedPassword }) => ({
+      stagedPassword: stagedPassword.set(
+        passwordKeys.PASSWORD_LENGTH,
+        Math.round(value)
+      )
+    }));
+  };
+
+  handleStagedPasswordBoolToggleUpdate = key => _ => {
+    const value = !this.state.stagedPassword.get(key);
+    this.setState(({ stagedPassword }) => ({
+      stagedPassword: stagedPassword.set(key, value)
     }));
   };
 
@@ -70,13 +93,9 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
   }
 
   render() {
-    const {
-      panelOpen,
-      onHandleTogglePanel,
-      content,
-      stagedPassword,
-      stagedPasswordGroupName
-    } = this.props;
+    const { panelOpen, onHandleTogglePanel, content } = this.props;
+    const { stagedPassword } = this.state;
+
     return (
       <Drawer anchor="right" open={panelOpen} onClose={onHandleTogglePanel}>
         <DrawerContainer
@@ -90,14 +109,19 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
           </PanelHeaderContainer>
 
           <PanelContentContainer>
-            <PasswordFormContent
-              stagedPassword={stagedPassword}
-              onHandleStagedPasswordUpdate={this.handleStagedPasswordUpdate}
-            />
-            {/* <PasswordGeneratorContent
+            {/* <PasswordFormContent
               stagedPassword={stagedPassword}
               onHandleStagedPasswordUpdate={this.handleStagedPasswordUpdate}
             /> */}
+            <PasswordGeneratorContent
+              stagedPassword={stagedPassword}
+              onHandleStagedPasswordBoolToggleUpdate={
+                this.handleStagedPasswordBoolToggleUpdate
+              }
+              onHandleStagedPasswordLengthUpdate={
+                this.handleStagedPasswordLengthUpdate
+              }
+            />
             {/* <Switch>
               <Route
                 exact

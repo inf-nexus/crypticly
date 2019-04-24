@@ -13,6 +13,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import UIButton from 'ui-components/UIButton';
 
+import * as passwordKeys from 'constants/records/Password';
+
 const PasswordGeneratorContentContainer = styled.form`
   display: flex;
   flex-direction: column;
@@ -31,70 +33,56 @@ const PasswordViewer = styled(Typography)`
 `;
 
 const PASSWORD = 'Hello World Cool Password';
-
-const LETTERS = 'letters';
-const NUMBERS = 'numbers';
-const SPECIAL_CHARACTERS = 'specialCharacters';
-const UPPERCASE = 'uppercase';
-const MANUAL_ENTRY = 'manualEntry';
+const MIN_PASSWORD_LENGTH = 1;
+const MAX_PASSWORD_LENGTH = 40;
 
 const SAVE = 'Save';
 
-type Props = {};
-
-type State = {
-  sliderValue: number,
-  enabled: object
+type Props = {
+  stagedPassword: any,
+  onHandleStagedPasswordLengthUpdate: (event: any, value: number) => void,
+  onHandleStagedPasswordBoolToggleUpdate: (key: string) => (event: any) => void
 };
 
+type State = {};
+
 class PasswordGeneratorContent extends PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      sliderValue: 50,
-      enabled: {
-        letters: true,
-        numbers: true,
-        specialCharacters: true,
-        uppercase: true
-      },
-      manualEntry: false
-    };
-  }
-
-  handleSliderChange = (event, value: number) => {
-    this.setState({ sliderValue: value });
-  };
-
-  handleToggleEnabledValue = value => event => {
-    this.setState(({ enabled }) => ({
-      enabled: { ...enabled, [value]: !enabled[value] }
-    }));
-  };
-
-  handleToggleManualEntry = () => {
-    this.setState(({ manualEntry }) => ({ manualEntry: !manualEntry }));
-  };
-
   render() {
     const {
-      sliderValue,
-      enabled: { letters, numbers, specialCharacters, uppercase, manualEntry }
-    } = this.state;
-    console.log('rendering password generator content');
+      onHandleStagedPasswordLengthUpdate,
+      onHandleStagedPasswordBoolToggleUpdate,
+      stagedPassword
+    } = this.props;
+
+    const passwordLength = stagedPassword.getPasswordLength();
+    const lettersEnabled = stagedPassword.getLettersEnabled();
+    const numsEnabled = stagedPassword.getNumsEnabled();
+    const specialCharactersEnabled = stagedPassword.getSpecialCharsEnabled();
+    const uppercaseEnabled = stagedPassword.getUppercaseEnabled();
+    const manualEntryEnabled = stagedPassword.getManualEntryEnabled();
+
+    console.log('passwordLength: ', passwordLength);
+
     return (
       <PasswordGeneratorContentContainer>
         <PasswordViewer>{PASSWORD}</PasswordViewer>
-        <Slider value={sliderValue} onChange={this.handleSliderChange} />
+        <Slider
+          value={passwordLength}
+          onChange={onHandleStagedPasswordLengthUpdate}
+          min={MIN_PASSWORD_LENGTH}
+          max={MAX_PASSWORD_LENGTH}
+        />
         <FormControl component="fieldset">
           {/* <FormLabel component="legend">Assign responsibility</FormLabel> */}
           <FormGroup>
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={letters}
-                  onChange={this.handleToggleEnabledValue(LETTERS)}
-                  value={LETTERS}
+                  checked={lettersEnabled}
+                  onChange={onHandleStagedPasswordBoolToggleUpdate(
+                    passwordKeys.LETTERS_ENABLED
+                  )}
+                  value={passwordKeys.LETTERS_ENABLED}
                   color="primary"
                 />
               }
@@ -103,9 +91,11 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={numbers}
-                  onChange={this.handleToggleEnabledValue(NUMBERS)}
-                  value={NUMBERS}
+                  checked={numsEnabled}
+                  onChange={onHandleStagedPasswordBoolToggleUpdate(
+                    passwordKeys.NUMS_ENABLED
+                  )}
+                  value={passwordKeys.NUMS_ENABLED}
                   color="primary"
                 />
               }
@@ -114,9 +104,11 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={specialCharacters}
-                  onChange={this.handleToggleEnabledValue(SPECIAL_CHARACTERS)}
-                  value={SPECIAL_CHARACTERS}
+                  checked={specialCharactersEnabled}
+                  onChange={onHandleStagedPasswordBoolToggleUpdate(
+                    passwordKeys.SPECIAL_CHARS_ENABLED
+                  )}
+                  value={passwordKeys.SPECIAL_CHARS_ENABLED}
                   color="primary"
                 />
               }
@@ -125,9 +117,11 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={uppercase}
-                  onChange={this.handleToggleEnabledValue(UPPERCASE)}
-                  value={UPPERCASE}
+                  checked={uppercaseEnabled}
+                  onChange={onHandleStagedPasswordBoolToggleUpdate(
+                    passwordKeys.UPPERCASE_ENABLED
+                  )}
+                  value={passwordKeys.UPPERCASE_ENABLED}
                   color="primary"
                 />
               }
@@ -136,9 +130,11 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={manualEntry}
-                  onChange={this.handleToggleManualEntry}
-                  value={MANUAL_ENTRY}
+                  checked={manualEntryEnabled}
+                  onChange={onHandleStagedPasswordBoolToggleUpdate(
+                    passwordKeys.MANUAL_ENTRY_ENABLED
+                  )}
+                  value={passwordKeys.MANUAL_ENTRY_ENABLED}
                   color="primary"
                 />
               }
