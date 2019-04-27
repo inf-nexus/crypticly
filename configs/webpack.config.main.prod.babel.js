@@ -22,7 +22,7 @@ export default merge.smart(baseConfig, {
   entry: './app/main.dev',
 
   output: {
-    path: path.join(__dirname, '..'),
+    path: path.join(__dirname, '..', 'app'),
     filename: './app/main.prod.js'
   },
 

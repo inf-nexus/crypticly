@@ -12,6 +12,7 @@ import UIFormInput from 'ui-components/UIFormInput';
 import UIButton from 'ui-components/UIButton';
 
 import routes from 'constants/routes';
+import * as dataTestIds from 'constants/dataTestIds';
 
 const TITLE = 'Crypticly';
 const USERNAME = 'username';
@@ -89,16 +90,19 @@ class LoginForm extends PureComponent<Props, State> {
                 label={USERNAME}
                 value={username}
                 onChange={partial(this.handleInputUpdate, 'username')}
+                data-test-id={dataTestIds.LOGIN_USERNAME_INPUT_ID}
               />
               <UIFormInput
                 label={PASSWORD}
                 value={password}
                 onChange={partial(this.handleInputUpdate, 'password')}
                 type="password"
+                data-test-id={dataTestIds.LOGIN_PASSWORD_INPUT_ID}
               />
               <UIButton
                 title="Submit"
                 onClick={partial(onLoginClicked, username, password)}
+                data-test-id={dataTestIds.LOGIN_BUTTON_ID}
               />
             </LoginFormContainer>
           </LoginContainer>

@@ -6,6 +6,10 @@ class Credentials extends Record(
   { username: null, password: null },
   'Credentials'
 ) {
+  constructor(props: any) {
+    super(props);
+  }
+
   getUsername(): string {
     return this[username];
   }

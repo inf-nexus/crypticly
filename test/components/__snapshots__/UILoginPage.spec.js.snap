@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UILoginPage component renders correctly 1`] = `
+<div
+  className="sc-bxivhb dJlUyI"
+>
+  <div
+    className="MuiPaper-root-1 MuiPaper-elevation2-5 MuiPaper-rounded-2 sc-ifAKCX jjcFGL"
+  >
+    <h3
+      className="MuiTypography-root-28 MuiTypography-h3-42 MuiTypography-alignCenter-51 sc-bZQynM jQAXPO"
+    >
+      Crypticly
+    </h3>
+    <form
+      className="sc-EHOje hdQlJB"
+    >
+      <div
+        className="sc-bdVaJa jpqvBK"
+      >
+        <p
+          className="MuiTypography-root-28 MuiTypography-body1-37 sc-htpNat daKUEJ"
+        >
+          username
+          :
+        </p>
+        <div
+          className="MuiInputBase-root-77 MuiInput-root-64 sc-bwzfXH fWFEyb"
+          onClick={[Function]}
+          required={true}
+        >
+          <input
+            autoComplete="false"
+            className="MuiInputBase-input-87 MuiInput-input-72"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            required={true}
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        className="sc-bdVaJa jpqvBK"
+      >
+        <p
+          className="MuiTypography-root-28 MuiTypography-body1-37 sc-htpNat daKUEJ"
+        >
+          password
+          :
+        </p>
+        <div
+          className="MuiInputBase-root-77 MuiInput-root-64 sc-bwzfXH fWFEyb"
+          onClick={[Function]}
+          required={true}
+        >
+          <input
+            autoComplete="false"
+            className="MuiInputBase-input-87 MuiInput-input-72 MuiInputBase-inputType-90 MuiInput-inputType-75"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            required={true}
+            type="password"
+            value=""
+          />
+        </div>
+      </div>
+      <button
+        className="MuiButtonBase-root-120 MuiButton-root-94 MuiButton-contained-105 MuiButton-containedPrimary-106 MuiButton-raised-108 MuiButton-raisedPrimary-109"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex="0"
+        type="button"
+      >
+        <span
+          className="MuiButton-label-95"
+        >
+          Submit
+        </span>
+        <span
+          className="MuiTouchRipple-root-123"
+        />
+      </button>
+    </form>
+  </div>
+</div>
+`;

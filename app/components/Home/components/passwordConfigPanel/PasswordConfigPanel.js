@@ -110,23 +110,13 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
         // onKeyDown={this.toggleDrawer('right', false)}
         >
           <PanelHeaderContainer>
-            <PanelHeader onHandleTogglePanel={onHandleTogglePanel} />
+            <PanelHeader
+              onHandleTogglePanel={onHandleTogglePanel}
+              passwordTitle={stagedPassword.getName()}
+            />
           </PanelHeaderContainer>
 
           <PanelContentContainer>
-            {/* <PasswordFormContent
-              stagedPassword={stagedPassword}
-              onHandleStagedPasswordUpdate={this.handleStagedPasswordUpdate}
-            /> */}
-            {/* <PasswordGeneratorContent
-              stagedPassword={stagedPassword}
-              onHandleStagedPasswordBoolToggleUpdate={
-                this.handleStagedPasswordBoolToggleUpdate
-              }
-              onHandleStagedPasswordLengthUpdate={
-                this.handleStagedPasswordLengthUpdate
-              }
-            /> */}
             <Switch>
               <Route
                 path={routes.PASSWORD_FORM}

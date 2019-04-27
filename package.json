@@ -150,6 +150,10 @@
     },
     "setupFiles": [
       "./internals/scripts/CheckBuiltsExist.js"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "app"
     ]
   },
   "devDependencies": {

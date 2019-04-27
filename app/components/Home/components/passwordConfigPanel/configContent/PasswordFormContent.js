@@ -15,7 +15,6 @@ const NAME = 'Name';
 const URL = 'URL';
 const USER_NAME = 'Username';
 const GROUP = 'Group';
-const GENERATE_PASSWORD = 'Generate Password';
 
 const PasswordFormContentContainer = styled.form`
   display: flex;
@@ -83,7 +82,7 @@ class PasswordFormContent extends PureComponent<Props, State> {
           onChange={onHandleStagedPasswordUpdate(passwordKeys.GROUP)}
         />
         <UIButton
-          title={GENERATE_PASSWORD}
+          title="Go To Password Generator"
           onClick={this.handleGeneratePasswordClicked}
         />
       </PasswordFormContentContainer>
