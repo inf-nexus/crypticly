@@ -8,8 +8,8 @@ import { partial } from 'lodash';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-import UIFormInput from 'ui-components/UIFormInput';
-import UIButton from 'ui-components/UIButton';
+import UILoginInput from 'ui-components/UILoginInput';
+import UILoginButton from 'ui-components/UILoginButton';
 
 import routes from 'constants/routes';
 import * as dataTestIds from 'constants/dataTestIds';
@@ -31,6 +31,7 @@ const LoginContainer = styled(Paper)`
   padding: 30px;
   display: flex;
   flex-direction: column;
+  background-color: ${props => props.theme.main.colors.secondary};
 `;
 
 const LoginFormContainer = styled.form`
@@ -42,6 +43,7 @@ const LoginFormContainer = styled.form`
 
 const Header = styled(Typography)`
   flex: 1;
+  color: ${props => props.theme.text.colors.primary};
 `;
 
 type Props = {
@@ -86,20 +88,20 @@ class LoginForm extends PureComponent<Props, State> {
               {TITLE}
             </Header>
             <LoginFormContainer>
-              <UIFormInput
+              <UILoginInput
                 label={USERNAME}
                 value={username}
                 onChange={partial(this.handleInputUpdate, 'username')}
                 data-test-id={dataTestIds.LOGIN_USERNAME_INPUT_ID}
               />
-              <UIFormInput
+              <UILoginInput
                 label={PASSWORD}
                 value={password}
                 onChange={partial(this.handleInputUpdate, 'password')}
                 type="password"
                 data-test-id={dataTestIds.LOGIN_PASSWORD_INPUT_ID}
               />
-              <UIButton
+              <UILoginButton
                 title="Submit"
                 onClick={partial(onLoginClicked, username, password)}
                 data-test-id={dataTestIds.LOGIN_BUTTON_ID}

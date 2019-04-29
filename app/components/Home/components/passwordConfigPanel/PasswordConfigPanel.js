@@ -30,6 +30,7 @@ const PanelContentContainer = styled.div`
   flex: 9;
   width: 350px;
   padding: 20px;
+  overflow-x: hidden;
 `;
 
 type Props = {

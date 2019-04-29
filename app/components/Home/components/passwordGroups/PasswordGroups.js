@@ -23,7 +23,7 @@ const ExpansionPanel = styled(MUIExpansionPanel)`
   }
 
   && {
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid ${props => props.theme.text.colors.primary};
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
     margin-auto;
@@ -31,11 +31,11 @@ const ExpansionPanel = styled(MUIExpansionPanel)`
 `;
 
 const Typography = styled(MUITypography)`
-  color: white;
+  color: ${props => props.theme.text.colors.primary};
 `;
 
 const ExpandMoreIcon = styled(MUIExpandMoreIcon)`
-  color: white;
+  color: ${props => props.theme.text.colors.primary};
 `;
 
 const PasswordExpansionPanel = ({ passwordGroup }) => (

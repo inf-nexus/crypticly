@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
+import styled, { ThemeProvider } from 'styled-components';
 import type { Store } from '../reducers/types';
 import Routes from 'Routes';
 
@@ -20,6 +21,21 @@ const jss = create({
   insertionPoint: 'jss-insertion-point'
 });
 
+const theme = {
+  main: {
+    colors: {
+      primary: '#383838',
+      secondary: '#282828'
+    }
+  },
+  text: {
+    colors: {
+      primary: 'white',
+      secondary: 'black'
+    }
+  }
+};
+
 type Props = {
   store: Store,
   history: {}
@@ -30,11 +46,13 @@ export default class Root extends Component<Props> {
     const { store, history } = this.props;
     return (
       <JssProvider jss={jss} generateClassName={generateClassName}>
-        <Provider store={store}>
-          <ConnectedRouter history={history}>
-            <Routes />
-          </ConnectedRouter>
-        </Provider>
+        <ThemeProvider theme={theme}>
+          <Provider store={store}>
+            <ConnectedRouter history={history}>
+              <Routes />
+            </ConnectedRouter>
+          </Provider>
+        </ThemeProvider>
       </JssProvider>
     );
   }
