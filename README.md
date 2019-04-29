@@ -2,7 +2,7 @@
 
 ## Description
 
-Simple password manager built using React/Redux + Electron. Uses AES-256 for file encryption and kbkdf2 for key generation.
+Simple password manager built using React/Redux + Electron. Uses AES-256 for file encryption and pbkdf2 for key generation.
 
 ## Screenshots
 
