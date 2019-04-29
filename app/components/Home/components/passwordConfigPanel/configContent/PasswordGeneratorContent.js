@@ -32,7 +32,7 @@ const PasswordViewer = styled(Typography)`
   text-align: center;
 `;
 
-const PASSWORD = 'Hello World Cool Password';
+const PASSWORD = 'zq5OhiA9icg14tyR';
 const MIN_PASSWORD_LENGTH = 1;
 const MAX_PASSWORD_LENGTH = 40;
 
