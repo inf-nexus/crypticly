@@ -19,11 +19,8 @@ class PasswordGroup extends PureComponent<Props> {
     const { passwords } = this.props;
     return (
       <GridList cols={3} spacing={10} cellHeight="auto">
-        {/* <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-          <ListSubheader component="div">December</ListSubheader>
-        </GridListTile> */}
         {passwords.map(password => (
-          <PasswordTile password={password} key={password.title} />
+          <PasswordTile password={password} key={password.getName()} />
         ))}
       </GridList>
     );

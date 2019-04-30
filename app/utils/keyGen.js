@@ -26,7 +26,6 @@ export const getDerivedKeyFromPassword = (
           console.log(error);
           reject(error);
         }
-        // console.log(derivedKey);
         resolve({
           key: derivedKey.toString('hex'),
           salt: _salt.toString('hex')

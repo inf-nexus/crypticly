@@ -32,7 +32,6 @@ const PasswordViewer = styled(Typography)`
   text-align: center;
 `;
 
-const PASSWORD = 'zq5OhiA9icg14tyR';
 const MIN_PASSWORD_LENGTH = 1;
 const MAX_PASSWORD_LENGTH = 40;
 
@@ -54,18 +53,17 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
       stagedPassword
     } = this.props;
 
+    const password = stagedPassword.getPassword();
     const passwordLength = stagedPassword.getPasswordLength();
     const lettersEnabled = stagedPassword.getLettersEnabled();
     const numsEnabled = stagedPassword.getNumsEnabled();
-    const specialCharactersEnabled = stagedPassword.getSpecialCharsEnabled();
+    const specialCharsEnabled = stagedPassword.getSpecialCharsEnabled();
     const uppercaseEnabled = stagedPassword.getUppercaseEnabled();
     const manualEntryEnabled = stagedPassword.getManualEntryEnabled();
 
-    console.log('passwordLength: ', passwordLength);
-
     return (
       <PasswordGeneratorContentContainer>
-        <PasswordViewer>{PASSWORD}</PasswordViewer>
+        <PasswordViewer>{password}</PasswordViewer>
         <Slider
           value={passwordLength}
           onChange={onHandleStagedPasswordLengthUpdate}
@@ -73,7 +71,6 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
           max={MAX_PASSWORD_LENGTH}
         />
         <FormControl component="fieldset">
-          {/* <FormLabel component="legend">Assign responsibility</FormLabel> */}
           <FormGroup>
             <FormControlLabel
               control={
@@ -104,7 +101,7 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={specialCharactersEnabled}
+                  checked={specialCharsEnabled}
                   onChange={onHandleStagedPasswordBoolToggleUpdate(
                     passwordKeys.SPECIAL_CHARS_ENABLED
                   )}

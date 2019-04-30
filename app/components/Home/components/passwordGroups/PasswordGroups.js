@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import type { Node } from 'react';
+import { List } from 'immutable';
 import styled from 'styled-components';
 
 import MUIExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -10,8 +11,6 @@ import MUIExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MUITypography from '@material-ui/core/Typography';
 
 import PasswordGroup from './components/PasswordGroup';
-
-import { passwordGroups } from 'constants/testingConstants';
 
 const ExpansionPanel = styled(MUIExpansionPanel)`
   background: none;
@@ -41,24 +40,28 @@ const ExpandMoreIcon = styled(MUIExpandMoreIcon)`
 const PasswordExpansionPanel = ({ passwordGroup }) => (
   <ExpansionPanel>
     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-      <Typography component="h2">{passwordGroup.group}</Typography>
+      <Typography component="h2">{passwordGroup.getGroupName()}</Typography>
     </ExpansionPanelSummary>
     <ExpansionPanelDetails>
-      <PasswordGroup passwords={passwordGroup.passwords} />
+      <PasswordGroup passwords={passwordGroup.getPasswords()} />
     </ExpansionPanelDetails>
   </ExpansionPanel>
 );
 
-type Props = {};
+type Props = {
+  passwordGroups: List<PasswordGroup>
+};
 
 class PasswordGroups extends PureComponent<Props> {
   render() {
+    const { passwordGroups = new List() } = this.props;
+
     return (
       <div>
         {passwordGroups.map(passwordGroup => (
           <PasswordExpansionPanel
             passwordGroup={passwordGroup}
-            key={passwordGroup.group}
+            key={passwordGroup.getGroupName()}
           />
         ))}
       </div>

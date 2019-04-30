@@ -53,7 +53,7 @@ export default () => (
           <Route path={routes.LOGIN} component={LoginPage} />
           <Route path={routes.HOME} component={HomePage} />
         </Switch>
-        <Redirect to={routes.LOGIN} />
+        <Redirect to={routes.HOME} />
       </ScrollContainer>
     </StyledContainer>
   </App>

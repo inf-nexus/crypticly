@@ -10,6 +10,7 @@ import Drawer from '@material-ui/core/Drawer';
 import PanelHeader from './PanelHeader';
 import PasswordFormContent from './configContent/PasswordFormContent';
 import PasswordGeneratorContent from './configContent/PasswordGeneratorContent';
+import { generateRandomPassword } from 'utils/passwordGenerator';
 
 import Password from 'constants/records/Password';
 import * as passwordKeys from 'constants/records/Password';
@@ -45,16 +46,15 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
 
-    const { password } = this.props;
+    const { password = new Password() } = this.props;
+    const stagedPassword = !password.getPassword()
+      ? password.set(passwordKeys.PASSWORD, password.generateRandomPassword())
+      : password;
 
     this.state = {
-      stagedPassword: password || new Password()
+      stagedPassword
     };
   }
-
-  // componentDidUpdate() {
-  //   console.log('stagedPassword: ', this.state.stagedPassword.toJS());
-  // }
 
   handleStagedPasswordUpdate = key => event => {
     const value = R.path(['target', 'value'])(event);
@@ -64,10 +64,17 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
   };
 
   handleStagedPasswordLengthUpdate = (_, value: number) => {
-    this.setState(({ stagedPassword }) => ({
-      stagedPassword: stagedPassword.set(
-        passwordKeys.PASSWORD_LENGTH,
-        Math.round(value)
+    const { stagedPassword } = this.state;
+
+    const nextStagedPassword: Password = stagedPassword.set(
+      passwordKeys.PASSWORD_LENGTH,
+      Math.round(value)
+    );
+
+    this.setState(() => ({
+      stagedPassword: nextStagedPassword.set(
+        passwordKeys.PASSWORD,
+        nextStagedPassword.generateRandomPassword()
       )
     }));
   };
@@ -98,18 +105,12 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
     const { stagedPassword } = this.state;
 
     if (!panelOpen) {
-      console.log('here');
       return null;
     }
 
     return (
       <Drawer anchor="right" open={panelOpen} onClose={onHandleTogglePanel}>
-        <DrawerContainer
-        // tabIndex={0}
-        // role="button"
-        // onClick={this.toggleDrawer('right', false)}
-        // onKeyDown={this.toggleDrawer('right', false)}
-        >
+        <DrawerContainer>
           <PanelHeaderContainer>
             <PanelHeader
               onHandleTogglePanel={onHandleTogglePanel}

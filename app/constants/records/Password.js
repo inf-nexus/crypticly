@@ -2,6 +2,8 @@
 
 import { Record, Map } from 'immutable';
 
+import { generateRandomPassword } from 'utils/passwordGenerator';
+
 const DEFAULT_PASSWORD_LENGTH = 10;
 
 // PasswordKeys
@@ -11,7 +13,6 @@ export const NAME = 'name';
 export const URL = 'url';
 export const LAST_UPDATED = 'lastUpdated';
 export const GROUP = 'group';
-export const CONFIG = 'config';
 export const PASSWORD_LENGTH = 'passwordLength';
 export const LETTERS_ENABLED = 'lettersEnabled';
 export const NUMS_ENABLED = 'numsEnabled';
@@ -85,6 +86,24 @@ class Password extends Record(
 
   getManualEntryEnabled() {
     return this[MANUAL_ENTRY_ENABLED];
+  }
+
+  generateRandomPassword() {
+    const passwordLength = this.getPasswordLength();
+    const lettersEnabled = this.getLettersEnabled();
+    const numsEnabled = this.getNumsEnabled();
+    const specialCharsEnabled = this.getSpecialCharsEnabled();
+    const uppercaseEnabled = this.getUppercaseEnabled();
+
+    const randomPassword = generateRandomPassword(
+      lettersEnabled,
+      uppercaseEnabled,
+      specialCharsEnabled,
+      numsEnabled,
+      passwordLength
+    );
+
+    return randomPassword;
   }
 }
 

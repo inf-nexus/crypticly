@@ -3,32 +3,35 @@
 import { Record, List, Map } from 'immutable';
 import Password from './Password';
 import Credentials from './Credentials';
+import PasswordGroup from './PasswordGroup';
 
 export const CREDENTIALS = 'credentials';
-export const PASSWORDS = 'passwords';
+export const PASSWORD_GROUPS = 'passwordGroups';
 
 class Crypt extends Record(
-  { [CREDENTIALS]: null, [PASSWORDS]: null },
+  { [CREDENTIALS]: new Credentials(), [PASSWORD_GROUPS]: new List() },
   'Crypt'
 ) {
   constructor(props) {
     const propMap = new Map(props);
 
     const credentials = new Credentials(propMap.get(CREDENTIALS));
-    const passwords = new List(
-      (propMap.get(PASSWORDS) || []).map(password => new Password(password))
+    const passwordGroups = new List(
+      (propMap.get(PASSWORD_GROUPS) || []).map(
+        passwordGroup => new PasswordGroup(passwordGroup)
+      )
     );
 
     const modifiedPropMap = propMap.merge({
       [CREDENTIALS]: credentials,
-      [PASSWORDS]: passwords
+      [PASSWORD_GROUPS]: passwordGroups
     });
 
     super(modifiedPropMap);
   }
 
-  getPasswords() {
-    return [PASSWORDS];
+  getPasswordGroups() {
+    return this[PASSWORD_GROUPS];
   }
 
   getCredentials() {
