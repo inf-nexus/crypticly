@@ -40,7 +40,8 @@ const SAVE = 'Save';
 type Props = {
   stagedPassword: any,
   onHandleStagedPasswordLengthUpdate: (event: any, value: number) => void,
-  onHandleStagedPasswordBoolToggleUpdate: (key: string) => (event: any) => void
+  onHandleStagedPasswordBoolToggleUpdate: (key: string) => (event: any) => void,
+  onHandleSave: () => void
 };
 
 type State = {};
@@ -50,6 +51,7 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
     const {
       onHandleStagedPasswordLengthUpdate,
       onHandleStagedPasswordBoolToggleUpdate,
+      onHandleSave,
       stagedPassword
     } = this.props;
 
@@ -140,10 +142,7 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
           </FormGroup>
           {/* <FormHelperText>Be careful</FormHelperText> */}
         </FormControl>
-        <UIButton
-          title={SAVE}
-          // onClick={partial(onLoginClicked, username, password)}
-        />
+        <UIButton title={SAVE} onClick={onHandleSave} />
       </PasswordGeneratorContentContainer>
     );
   }

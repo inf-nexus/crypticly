@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import type { Node } from 'react';
+import { connect } from 'react-redux';
 import { Switch, Route, Redirect, withRouter } from 'react-router';
 import styled from 'styled-components';
 import R from 'ramda';
@@ -14,6 +15,7 @@ import { generateRandomPassword } from 'utils/passwordGenerator';
 
 import Password from 'constants/records/Password';
 import * as passwordKeys from 'constants/records/Password';
+import * as loginActions from 'actions/login';
 
 import routes from 'constants/routes';
 
@@ -86,19 +88,12 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
     }));
   };
 
-  handleSave() {
-    /**
-     * TODO:
-     * I. check to see if group exsists, if true merge into exsisting
-     * password group if false create a new group and add to password list
-     *
-     * II. after updating Crypt object, dispatch action to encrypt the current
-     * Crypt to crypt.dat (later try more resiliant soln i.e. writing to a
-     * temporary file and on success copy the contents to real file and delete
-     * temporary one)
-     *
-     */
-  }
+  handleSave = () => {
+    const { onHandleTogglePanel, updateCryptPassword } = this.props;
+    const { stagedPassword } = this.state;
+    updateCryptPassword(stagedPassword);
+    onHandleTogglePanel();
+  };
 
   render() {
     const { panelOpen, onHandleTogglePanel, content, history } = this.props;
@@ -142,6 +137,7 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
                     onHandleStagedPasswordLengthUpdate={
                       this.handleStagedPasswordLengthUpdate
                     }
+                    onHandleSave={this.handleSave}
                   />
                 )}
               />
@@ -154,4 +150,11 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
   }
 }
 
-export default withRouter(PasswordConfigPanel);
+const ConnectedPasswordConfigPanel = connect(
+  (state, ownProps) => ({}),
+  {
+    updateCryptPassword: loginActions.updateCryptPassword
+  }
+)(PasswordConfigPanel);
+
+export default withRouter(ConnectedPasswordConfigPanel);

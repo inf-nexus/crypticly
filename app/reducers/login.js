@@ -6,14 +6,16 @@ import {
   UPDATE_CRYPT,
   LOGIN_ATTEMPT,
   LOGIN_ATTEMPT_SUCCESS,
-  LOGIN_ATTEMPT_FAILED
+  LOGIN_ATTEMPT_FAILED,
+  UPDATE_CRYPT_PASSWORD
 } from 'actions/login';
 import CryptFileData from 'constants/records/CryptFileData';
+import Crypt from 'constants/records/Crypt';
 import * as statusStates from 'constants/statusStates';
 
 const initialState = {
   cryptFileData: null,
-  crypt: null,
+  crypt: new Crypt(),
   loginStatus: statusStates.UNINITIALIZED,
   error: null
 };

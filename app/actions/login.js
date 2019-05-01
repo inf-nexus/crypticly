@@ -16,6 +16,7 @@ import Crypt from 'constants/records/Crypt';
 import Credentials from 'constants/records/Credentials';
 
 import * as loginSelectors from 'selectors/login';
+import Password from '../constants/records/Password';
 
 const CRYPT_FILE = 'crypt.dat';
 const ROOT_DIR = './';
@@ -40,9 +41,10 @@ export const UPDATE_CRYPT = 'UPDATE_CRYPT';
 // pass map of key value pairs merge on
 export const UPDATE_CRYPT_CREDENTIALS = 'UPDATE_CRYPT_CREDENTIALS';
 
-export const CREATE_CRYPT_PASSWORD = 'CREATE_CRYPT_PASSWORD';
+export const UPDATE_USER_PASSWORD = 'UPDATE_USER_PASSWORD';
+export const UPDATE_USER_USERNAME = 'UPDATE_USER_USERNAME';
+
 // pass map of key value pairs to merge on
-export const UPDATE_CRYPT_PASSWORD = 'UPDATE_CRYPT_PASSWORD';
 export const DELETE_CRYPT_PASSWORD = 'DELETE_CRYPT_PASSWORD';
 
 // Action Creators
@@ -146,4 +148,14 @@ export const loginAttempt = (username, password) => (dispatch, getState) => {
       }
     );
   }
+};
+
+export const updateCryptPassword = (password: Password) => (
+  dispatch,
+  getState
+) => {
+  const updatedCrypt: Crypt = loginSelectors
+    .getCrypt(getState())
+    .updateCryptPassword(password);
+  dispatch(onUpdateCrypt(updatedCrypt));
 };
