@@ -13,3 +13,7 @@ export const getCrypt = state => {
 export const getLoginStatus = state => {
   return R.path(['login', 'loginStatus'], state);
 };
+
+export const getPasswordGroups = state => {
+  return R.path(['login', 'crypt', 'passwordGroups'])(state);
+};

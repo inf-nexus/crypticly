@@ -1,7 +1,10 @@
 // @flow
 import React, { PureComponent } from 'react';
 import type { Node } from 'react';
+import { Map } from 'immutable';
 import styled from 'styled-components';
+
+import Password from 'constants/records/Password';
 
 import MUIGridList from '@material-ui/core/GridList';
 import PasswordTile from './PasswordTile';
@@ -11,7 +14,7 @@ const GridList = styled(MUIGridList)`
 `;
 
 type Props = {
-  passwords: List<Object>
+  passwords: Map<Password>
 };
 
 class PasswordGroup extends PureComponent<Props> {
@@ -19,9 +22,10 @@ class PasswordGroup extends PureComponent<Props> {
     const { passwords } = this.props;
     return (
       <GridList cols={3} spacing={10} cellHeight="auto">
-        {passwords.map(password => (
-          <PasswordTile password={password} key={password.getName()} />
-        ))}
+        {passwords.keySeq().map(passwordName => {
+          const password: Password = passwords.get(passwordName);
+          return <PasswordTile password={password} key={password.getName()} />;
+        })}
       </GridList>
     );
   }

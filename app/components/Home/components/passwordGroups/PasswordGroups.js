@@ -1,7 +1,8 @@
 // @flow
 import React, { PureComponent } from 'react';
 import type { Node } from 'react';
-import { List } from 'immutable';
+import { connect } from 'react-redux';
+import { Map } from 'immutable';
 import styled from 'styled-components';
 
 import MUIExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -10,12 +11,15 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import MUIExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MUITypography from '@material-ui/core/Typography';
 
+import * as loginSelectors from 'selectors/login';
+
 import PasswordGroup from './components/PasswordGroup';
 
 const ExpansionPanel = styled(MUIExpansionPanel)`
   background: none;
   box-shadow: none;
   margin-bottom: 100px;
+  min-width: 700px;
 
   :before {
     background: none;
@@ -54,19 +58,35 @@ type Props = {
 
 class PasswordGroups extends PureComponent<Props> {
   render() {
-    const { passwordGroups = new List() } = this.props;
+    const { passwordGroups } = this.props;
+
+    // console.log('passwordGroups: ', passwordGroups);
+
+    // passwordGroups.keySeq().forEach(key => {
+    //   console.log(key);
+    // });
 
     return (
       <div>
-        {passwordGroups.map(passwordGroup => (
-          <PasswordExpansionPanel
-            passwordGroup={passwordGroup}
-            key={passwordGroup.getGroupName()}
-          />
-        ))}
+        {passwordGroups.keySeq().map(passwordGroupName => {
+          const passwordGroup: PasswordGroup = passwordGroups.get(
+            passwordGroupName
+          );
+          return (
+            <PasswordExpansionPanel
+              passwordGroup={passwordGroup}
+              key={passwordGroup.getGroupName()}
+            />
+          );
+        })}
       </div>
     );
   }
 }
 
-export default PasswordGroups;
+export default connect(
+  (state, ownProps) => ({
+    passwordGroups: loginSelectors.getPasswordGroups(state)
+  }),
+  {}
+)(PasswordGroups);
