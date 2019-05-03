@@ -61,7 +61,7 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
     const numsEnabled = stagedPassword.getNumsEnabled();
     const specialCharsEnabled = stagedPassword.getSpecialCharsEnabled();
     const uppercaseEnabled = stagedPassword.getUppercaseEnabled();
-    const manualEntryEnabled = stagedPassword.getManualEntryEnabled();
+    // const manualEntryEnabled = stagedPassword.getManualEntryEnabled();
 
     return (
       <PasswordGeneratorContentContainer>
@@ -126,7 +126,7 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
               }
               label="Uppercase"
             />
-            <FormControlLabel
+            {/*<FormControlLabel
               control={
                 <Checkbox
                   checked={manualEntryEnabled}
@@ -138,9 +138,8 @@ class PasswordGeneratorContent extends PureComponent<Props, State> {
                 />
               }
               label="Manual Entry"
-            />
+            />*/}
           </FormGroup>
-          {/* <FormHelperText>Be careful</FormHelperText> */}
         </FormControl>
         <UIButton title={SAVE} onClick={onHandleSave} />
       </PasswordGeneratorContentContainer>

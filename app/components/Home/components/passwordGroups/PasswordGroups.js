@@ -15,6 +15,8 @@ import * as loginSelectors from 'selectors/login';
 
 import PasswordGroup from './components/PasswordGroup';
 
+import Password from 'constants/records/Password';
+
 const ExpansionPanel = styled(MUIExpansionPanel)`
   background: none;
   box-shadow: none;
@@ -41,30 +43,28 @@ const ExpandMoreIcon = styled(MUIExpandMoreIcon)`
   color: ${props => props.theme.text.colors.primary};
 `;
 
-const PasswordExpansionPanel = ({ passwordGroup }) => (
+const PasswordExpansionPanel = ({ passwordGroup, onHandleTogglePanel }) => (
   <ExpansionPanel>
     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
       <Typography component="h2">{passwordGroup.getGroupName()}</Typography>
     </ExpansionPanelSummary>
     <ExpansionPanelDetails>
-      <PasswordGroup passwords={passwordGroup.getPasswords()} />
+      <PasswordGroup
+        passwords={passwordGroup.getPasswords()}
+        onHandleTogglePanel={onHandleTogglePanel}
+      />
     </ExpansionPanelDetails>
   </ExpansionPanel>
 );
 
 type Props = {
-  passwordGroups: List<PasswordGroup>
+  passwordGroups: List<PasswordGroup>,
+  onHandleTogglePanel: (password: Password) => void
 };
 
 class PasswordGroups extends PureComponent<Props> {
   render() {
-    const { passwordGroups } = this.props;
-
-    // console.log('passwordGroups: ', passwordGroups);
-
-    // passwordGroups.keySeq().forEach(key => {
-    //   console.log(key);
-    // });
+    const { passwordGroups, onHandleTogglePanel } = this.props;
 
     return (
       <div>
@@ -76,6 +76,7 @@ class PasswordGroups extends PureComponent<Props> {
             <PasswordExpansionPanel
               passwordGroup={passwordGroup}
               key={passwordGroup.getGroupName()}
+              onHandleTogglePanel={onHandleTogglePanel}
             />
           );
         })}

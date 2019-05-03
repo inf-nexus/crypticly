@@ -18,7 +18,7 @@ export const LETTERS_ENABLED = 'lettersEnabled';
 export const NUMS_ENABLED = 'numsEnabled';
 export const SPECIAL_CHARS_ENABLED = 'specialCharsEnabled';
 export const UPPERCASE_ENABLED = 'uppercaseEnabled';
-export const MANUAL_ENTRY_ENABLED = 'manualEntryEnabled';
+// export const MANUAL_ENTRY_ENABLED = 'manualEntryEnabled';
 
 class Password extends Record(
   {
@@ -32,8 +32,8 @@ class Password extends Record(
     [LETTERS_ENABLED]: true,
     [NUMS_ENABLED]: true,
     [SPECIAL_CHARS_ENABLED]: true,
-    [UPPERCASE_ENABLED]: true,
-    [MANUAL_ENTRY_ENABLED]: false
+    [UPPERCASE_ENABLED]: true
+    // [MANUAL_ENTRY_ENABLED]: false
   },
   'Password'
 ) {
@@ -84,9 +84,9 @@ class Password extends Record(
     return this[UPPERCASE_ENABLED];
   }
 
-  getManualEntryEnabled() {
-    return this[MANUAL_ENTRY_ENABLED];
-  }
+  // getManualEntryEnabled() {
+  //   return this[MANUAL_ENTRY_ENABLED];
+  // }
 
   generateRandomPassword() {
     const passwordLength = this.getPasswordLength();

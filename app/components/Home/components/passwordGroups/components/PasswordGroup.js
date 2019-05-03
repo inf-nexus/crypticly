@@ -14,17 +14,24 @@ const GridList = styled(MUIGridList)`
 `;
 
 type Props = {
-  passwords: Map<Password>
+  passwords: Map<Password>,
+  onHandleTogglePanel: (password: Password) => void
 };
 
 class PasswordGroup extends PureComponent<Props> {
   render() {
-    const { passwords } = this.props;
+    const { passwords, onHandleTogglePanel } = this.props;
     return (
       <GridList cols={3} spacing={10} cellHeight="auto">
         {passwords.keySeq().map(passwordName => {
           const password: Password = passwords.get(passwordName);
-          return <PasswordTile password={password} key={password.getName()} />;
+          return (
+            <PasswordTile
+              password={password}
+              key={password.getName()}
+              onHandleTogglePanel={onHandleTogglePanel}
+            />
+          );
         })}
       </GridList>
     );

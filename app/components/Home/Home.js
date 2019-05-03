@@ -9,6 +9,8 @@ import AddButton from './components/AddButton';
 import PasswordGroups from './components/passwordGroups/PasswordGroups';
 import PasswordConfigPanel from './components/passwordConfigPanel/PasswordConfigPanel';
 
+import Password from 'constants/records/Password';
+
 const HomeContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -46,7 +48,7 @@ class Home extends PureComponent<Props, State> {
     };
   }
 
-  handleTogglePanel = () => {
+  handleTogglePanel = (password: Password) => () => {
     const { history } = this.props;
 
     this.setState(
@@ -54,7 +56,7 @@ class Home extends PureComponent<Props, State> {
       () => {
         const { panelOpen } = this.state;
         if (panelOpen) {
-          history.push(routes.PASSWORD);
+          history.push({ pathname: routes.PASSWORD, state: { password } });
         } else {
           history.push(routes.HOME);
         }
@@ -68,11 +70,11 @@ class Home extends PureComponent<Props, State> {
     return (
       <HomeContainer>
         <PasswordsContainer>
-          <PasswordGroups />
+          <PasswordGroups onHandleTogglePanel={this.handleTogglePanel} />
         </PasswordsContainer>
         <AddButtonContainer>
           <AddButtonStyleWrapper>
-            <AddButton onClick={this.handleTogglePanel} />
+            <AddButton onClick={this.handleTogglePanel()} />
           </AddButtonStyleWrapper>
         </AddButtonContainer>
         <Route
@@ -80,7 +82,7 @@ class Home extends PureComponent<Props, State> {
           render={() => (
             <PasswordConfigPanel
               panelOpen={panelOpen}
-              onHandleTogglePanel={this.handleTogglePanel}
+              onHandleTogglePanel={this.handleTogglePanel()}
             />
           )}
         />

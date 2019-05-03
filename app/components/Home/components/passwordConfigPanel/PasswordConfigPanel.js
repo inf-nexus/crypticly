@@ -39,7 +39,8 @@ const PanelContentContainer = styled.div`
 type Props = {
   panelOpen: boolean,
   content: Node,
-  onHandleTogglePanel: () => void
+  onHandleTogglePanel: () => void,
+  location: Object
 };
 
 type State = {};
@@ -48,7 +49,9 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
 
-    const { password = new Password() } = this.props;
+    const password =
+      R.path(['location', 'state', 'password'], this.props) || new Password();
+
     const stagedPassword = !password.getPassword()
       ? password.set(passwordKeys.PASSWORD, password.generateRandomPassword())
       : password;
