@@ -1,5 +1,7 @@
 // @flow
 
+import crypto from 'crypto';
+
 import { getDerivedKeyFromPassword } from 'utils/keyGen';
 import { encryptToFile, decrypt } from 'utils/cipher';
 import { isFileInDir, getSaltFromCryptFile } from 'utils/fileHelper';
@@ -14,6 +16,7 @@ import CryptFileData, {
 
 import Crypt from 'constants/records/Crypt';
 import Credentials from 'constants/records/Credentials';
+import EncryptElements from 'constants/records/EncryptElements';
 
 import * as loginSelectors from 'selectors/login';
 import Password from '../constants/records/Password';
@@ -24,28 +27,15 @@ const ROOT_DIR = './';
 // Action Types
 
 export const INIT_APP = 'INIT_APP';
-
 export const UPDATE_CRYPT_FILE_DATA = 'UPDATE_CRYPT_FILE_DATA';
-
 export const LOGIN_ATTEMPT = 'LOGIN_ATTEMPT'; // call as soon as user clicks submit
-/**
- * correct username / password entered or success at establishing new credentials
- */
 export const LOGIN_ATTEMPT_SUCCESS = 'LOGIN_ATTEMPT_SUCCESS';
 export const LOGIN_ATTEMPT_FAILED = 'LOGIN_ATTEMPT_FAILED';
-
-/**
- * attempt to decrypt if crypt.dat present o/w create new crypt.dat
- */
 export const UPDATE_CRYPT = 'UPDATE_CRYPT';
-// pass map of key value pairs merge on
-export const UPDATE_CRYPT_CREDENTIALS = 'UPDATE_CRYPT_CREDENTIALS';
-
+// export const UPDATE_CRYPT_CREDENTIALS = 'UPDATE_CRYPT_CREDENTIALS';
 export const UPDATE_USER_PASSWORD = 'UPDATE_USER_PASSWORD';
 export const UPDATE_USER_USERNAME = 'UPDATE_USER_USERNAME';
-
-// pass map of key value pairs to merge on
-export const DELETE_CRYPT_PASSWORD = 'DELETE_CRYPT_PASSWORD';
+export const UPDATE_ENCRYPT_ELEMENTS = 'UPDATE_ENCRYPT_ELEMENTS';
 
 // Action Creators
 
@@ -75,10 +65,17 @@ const onLoginAttemptFailed = error => ({
   }
 });
 
-const onUpdateCrypt = crypt => ({
+const onUpdateCrypt = (crypt: Crypt) => ({
   type: UPDATE_CRYPT,
   payload: {
     crypt
+  }
+});
+
+export const onUpdateEncryptElements = (encryptElements: EncryptElements) => ({
+  type: UPDATE_ENCRYPT_ELEMENTS,
+  payload: {
+    encryptElements
   }
 });
 
@@ -119,6 +116,7 @@ export const loginAttempt = (username, password) => (dispatch, getState) => {
           const crypt = new Crypt(decryptedData);
           dispatch(onUpdateCrypt(crypt));
           dispatch(onLoginAttemptSuccess());
+          updateEncryptElements(usernameAndPassword)(dispatch, getState);
         }
       },
       error => {
@@ -137,6 +135,7 @@ export const loginAttempt = (username, password) => (dispatch, getState) => {
             });
             dispatch(onUpdateCryptFileData(cryptFileData));
             dispatch(onLoginAttemptSuccess());
+            updateEncryptElements(usernameAndPassword)(dispatch, getState);
           },
           error => {
             dispatch(onLoginAttemptFailed(error.message));
@@ -150,12 +149,58 @@ export const loginAttempt = (username, password) => (dispatch, getState) => {
   }
 };
 
+const updateEncryptElements = (usernameAndPassword: string) => (
+  dispatch,
+  getState
+) => {
+  getDerivedKeyFromPassword(usernameAndPassword).then(
+    ({ key, salt }) => {
+      const iv = crypto.randomBytes(16).toString('hex');
+      const encryptElements = new EncryptElements({
+        encryptKey: key,
+        iv,
+        salt
+      });
+      dispatch(onUpdateEncryptElements(encryptElements));
+    },
+    error => {
+      console.log('error generating password');
+    }
+  );
+};
+
 export const updateCryptPassword = (password: Password) => (
   dispatch,
   getState
 ) => {
-  const updatedCrypt: Crypt = loginSelectors
-    .getCrypt(getState())
-    .updateCryptPassword(password);
-  dispatch(onUpdateCrypt(updatedCrypt));
+  return new Promise((resolve, reject) => {
+    const updatedCrypt: Crypt = loginSelectors
+      .getCrypt(getState())
+      .updateCryptPassword(password);
+    dispatch(onUpdateCrypt(updatedCrypt));
+    resolve();
+  });
+};
+
+export const saveCrypt = () => (dispatch, getState) => {
+  const state = getState();
+  const encryptElements: EncryptElements = loginSelectors.getEncryptElements(
+    state
+  );
+  const crypt: Crypt = loginSelectors.getCrypt(state);
+  const encryptKey = encryptElements.getEncryptKey();
+  const iv = encryptElements.getIv();
+  const salt = encryptElements.getSalt();
+
+  encryptToFile(CRYPT_FILE, encryptKey, salt, crypt.toJS()).then(
+    ({ data: encryptedData, iv }) => {
+      cryptFileData = new CryptFileData({
+        data: [iv, salt, encryptedData].join(':')
+      });
+      dispatch(onUpdateCryptFileData(cryptFileData));
+    },
+    error => {
+      console.log('encrypting to file failed: ', error.message);
+    }
+  );
 };

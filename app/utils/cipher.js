@@ -8,9 +8,9 @@ const ENCRYPT_ALGO = 'aes-256-cbc';
 const ENCODING = 'hex';
 const DELIM = ':';
 
-const encrypt = (key: string, data: any): object => {
+const encrypt = (key: string, data: any, _iv = null): object => {
   let encrypted = null;
-  const iv = crypto.randomBytes(16);
+  const iv = _iv || crypto.randomBytes(16);
 
   try {
     let cipher = crypto.createCipheriv(

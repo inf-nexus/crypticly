@@ -3,11 +3,11 @@
 import R from 'ramda';
 
 export const getCryptFileData = state => {
-  return R.path(['login', 'cryptFileData'])(state);
+  return R.path(['login', 'cryptFileData'], state);
 };
 
 export const getCrypt = state => {
-  return R.path(['login', 'crypt'])(state);
+  return R.path(['login', 'crypt'], state);
 };
 
 export const getLoginStatus = state => {
@@ -15,5 +15,9 @@ export const getLoginStatus = state => {
 };
 
 export const getPasswordGroups = state => {
-  return R.path(['login', 'crypt', 'passwordGroups'])(state);
+  return R.path(['login', 'crypt', 'passwordGroups'], state);
+};
+
+export const getEncryptElements = state => {
+  return R.path(['login', 'encryptElements'], state);
 };

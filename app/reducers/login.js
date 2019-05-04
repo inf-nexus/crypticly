@@ -7,15 +7,18 @@ import {
   LOGIN_ATTEMPT,
   LOGIN_ATTEMPT_SUCCESS,
   LOGIN_ATTEMPT_FAILED,
-  UPDATE_CRYPT_PASSWORD
+  UPDATE_CRYPT_PASSWORD,
+  UPDATE_ENCRYPT_ELEMENTS
 } from 'actions/login';
 import CryptFileData from 'constants/records/CryptFileData';
 import Crypt from 'constants/records/Crypt';
+import EncryptElements from 'constants/records/EncryptElements';
 import * as statusStates from 'constants/statusStates';
 
 const initialState = {
   cryptFileData: null,
   crypt: new Crypt(),
+  encryptElements: new EncryptElements(),
   loginStatus: statusStates.UNINITIALIZED,
   error: null
 };
@@ -62,6 +65,14 @@ export default function login(state = initialState, action) {
         ...state,
         loginStatus: statusStates.FAILED,
         error
+      };
+    }
+
+    case UPDATE_ENCRYPT_ELEMENTS: {
+      const { encryptElements } = action.payload;
+      return {
+        ...state,
+        encryptElements
       };
     }
 

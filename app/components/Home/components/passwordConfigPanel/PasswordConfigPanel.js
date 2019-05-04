@@ -40,7 +40,9 @@ type Props = {
   panelOpen: boolean,
   content: Node,
   onHandleTogglePanel: () => void,
-  location: Object
+  location: Object,
+  updateCryptPassword: (password: Password) => (dispatch, getState) => void,
+  saveCrypt: () => (dispatch, getState) => void
 };
 
 type State = {};
@@ -92,9 +94,11 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
   };
 
   handleSave = () => {
-    const { onHandleTogglePanel, updateCryptPassword } = this.props;
+    const { onHandleTogglePanel, updateCryptPassword, saveCrypt } = this.props;
     const { stagedPassword } = this.state;
-    updateCryptPassword(stagedPassword);
+    updateCryptPassword(stagedPassword).then(() => {
+      saveCrypt();
+    });
     onHandleTogglePanel();
   };
 
@@ -156,7 +160,8 @@ class PasswordConfigPanel extends PureComponent<Props, State> {
 const ConnectedPasswordConfigPanel = connect(
   (state, ownProps) => ({}),
   {
-    updateCryptPassword: loginActions.updateCryptPassword
+    updateCryptPassword: loginActions.updateCryptPassword,
+    saveCrypt: loginActions.saveCrypt
   }
 )(PasswordConfigPanel);
 
